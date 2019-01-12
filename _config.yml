@@ -1,1 +1,13 @@
-theme: jekyll-theme-minimal
+title: Ellie Borden
+author: Ellie Borden
+description: This is a personal website about testing, security, and documentation.
+
+highlighter: null
+permalink: /:title
+
+url: http://www.ellieborden.tech
+baseurl:
+
+# Custom options:
+# color_scheme: azul|ruby|amber|avocado
+# color_scheme: azul
