@@ -1,6 +1,6 @@
 <!-- meta information -->
 <meta charset="utf-8">
-<meta name="description" {% if page.title == "Home" %}
+<meta name="description" {% if page.title == "Blog" %}
       content="{{ site.description }}" {% else %}
       content="{{ page.content | strip_html | strip_newlines | truncate: 120 }}" {% endif %}>
 <meta name="author" content="{{ site.author }}">
@@ -19,7 +19,7 @@
 </script>
 
 <!-- title -->
-<title>{% if page.title %}{{ page.title }} &middot; {% endif %}{{ site.title }}</title>
+<title>{{ site.author }} - {{ page.title }}</title>
 
 <!-- icons -->
 <link rel="shortcut icon" href="{{ '/assets/images/logo.png' | relative_url }}">
@@ -30,10 +30,9 @@
 <link rel="stylesheet" href="{{ '/assets/css/syntax.css' | relative_url }}">
 <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
 
-{% if site.paginate %}
 <!-- font Awesome -->
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-{% endif %}
+<!-- <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet"> -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- feed links -->
 <link rel="alternate" href="{{ 'feed.xml' | absolute_url }}" type="application/rss+xml" title="{{ site.title }}">

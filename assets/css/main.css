@@ -54,7 +54,7 @@ a {
 hr {
   border : 0;
   height: 25px;
-  background : url(/assets/images/eagle.png) center center no-repeat;
+  background : url(/assets/images/bug.png) center center no-repeat;
 }
 
 code {
@@ -309,9 +309,6 @@ footer {
   Single page styles
 ================================================================================
 */
-.single {
-  margin-bottom: 100px;
-}
 
 .single {
   font-size: 1.125rem;
@@ -383,6 +380,32 @@ footer {
 
 #mc_embed_signup{background:#f5f5f5; clear:left; font:14px Helvetica,Arial,sans-serif; }
 
+/*
+================================================================================
+  Share Button Styles
+================================================================================
+*/
+.share-media {
+  padding: 0 0 20px 0;
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.fa {
+  padding: 10px !important;
+  font-size: 16px !important;
+  /* width: 30px !important; */
+  text-align: center !important;
+  text-decoration: none !important;
+  margin: 5px 2px !important;
+  border-radius: 50% !important;
+}
+.fa:hover {opacity: 0.7;}
+.fa-facebook {background: #777; color: #333333 !important; padding: 10px 12px !important;}
+.fa-twitter {background: #777; color: #333333 !important;}
+.fa-google {background: #777; color: #333333 !important;}
+.fa-linkedin {background: #777; color: #333333 !important;}
+.fa-reddit {background: #777; color: #333333 !important;}
 
 /*
 ================================================================================

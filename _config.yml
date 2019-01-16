@@ -1,11 +1,11 @@
 title: Ellie Borden
 author: Ellie Borden
-description: This is a personal website about testing, security, and documentation.
+description: ellieborden.tech is a blog for software-testing professionals and enthusiasts. Its topics are based on technical books, industry trends, and my personal experiences.
 
 highlighter: null
 permalink: /:title
 
-url: 
+url: https://www.ellieborden.tech
 baseurl:
 
 # Custom options:
