@@ -234,7 +234,7 @@ footer {
 ================================================================================
 */
 .archive {
-  margin-bottom: 100px;
+  margin-bottom: 50px;
 }
 
 .archive-item {
@@ -267,19 +267,24 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  margin-bottom: 10px;
+  /* margin-bottom: 5px; */
+  margin-top: 5px;
 }
 
-.archive-item article a {
+.archive-item article span {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
 
+.archive-item article span a { font-weight: bold; }
+
 .post-date {
   text-align: right;
   -ms-flex-preferred-size: 110px;
       flex-basis: 110px;
+  font-weight: bold;
+  white-space: nowrap;
 }
 
 /*
@@ -369,3 +374,28 @@ footer {
       flex-basis: 80px;
   }
 }
+
+/*
+================================================================================
+  Subscription Form Styles
+================================================================================
+*/
+
+#mc_embed_signup{background:#f5f5f5; clear:left; font:14px Helvetica,Arial,sans-serif; }
+
+
+/*
+================================================================================
+  Custom Styles
+================================================================================
+*/
+
+.profile-pic {
+  border: 3px solid #333;
+  border-radius: 100%;
+  display: block;
+  /* width: 200px; */
+  margin: 0 auto;
+}
+
+.img-center {display: block; margin: 0 auto;}
