@@ -3,23 +3,26 @@ layout: page
 title: About
 ---
 
-ellieborden.tech is a blog for software-testing professionals and enthusiasts. Its topics are based on technical books, industry trends, and my personal experiences.
+ellieborden.tech is a bland and boring blog for anyone interested in software quality. Its topics are based on technical books, industry trends, and my personal experiences.
 
-![profile picture](../assets/images/0.jpeg){:.profile-pic}
+![profile picture](../assets/images/0.png){:.profile-pic}
 
-My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan but am currently traveling the US with my partner. I love testing. Especially exploratory and security testing. I'm also passionate about technical writing and open source.
+My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan but am currently traveling the US with my partner. I love testing. I'm also passionate about technical writing and open source. 
 
-**Some of my recent open source work includes**
+**I'm currently involved in the following project(s):**
 
-- [**Software Testing Notes**](https://ellieborden.github.io/Software-Testing-Notes/) - A searchable collection of notes, templates, and checklists for testers. (Work in Progress)
+<!-- 
+NOTE: This is on hold (potentially indefinitely) due to lack of time and too much overlap with my aspirations for this blog.
+- [**Software Testing Wiki**](https://ellieborden.github.io/Software-Testing-Wiki/) - A searchable collection of notes, templates, and checklists for testers. (Early stage, work in Progress.) 
+-->
 
 - [**Cherrytree User Manual**](http://giuspen.com/cherrytreemanual/) - A user guide for Cherrytree, a hierarchical note-taking application.
 
-Contact me at the email address listed below if you're interested in contributing to any of these projects. Tell me about your projects too!
+Contact me at the email address listed below if you're interested in contributing to any of those. 
 
 ## Subscribe
 
-Subscribe to my newsletter to be notified when new content is posted.
+Subscribe to my newsletter to be notified when new content is posted. 
 
 <!-- Begin Mailchimp Signup Form -->
 <link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">

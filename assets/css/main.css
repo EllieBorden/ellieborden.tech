@@ -414,10 +414,11 @@ footer {
 */
 
 .profile-pic {
-  border: 3px solid #333;
+  border: 2px solid #333;
   border-radius: 100%;
   display: block;
   /* width: 200px; */
+  max-width: 300px;
   margin: 0 auto;
 }
 
