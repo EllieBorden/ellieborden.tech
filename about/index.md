@@ -25,8 +25,8 @@ Contact me at the email address listed below if you're interested in contributin
 Subscribe to my newsletter to be notified when new content is posted. 
 
 <!-- Begin Mailchimp Signup Form -->
-<link href="//cdn-images.mailchimp.com/embedcode/classic-10_7.css" rel="stylesheet" type="text/css">
-<div id="mc_embed_signup">
+<link href="/assets/css/mailchimp.css" rel="stylesheet" type="text/css">
+<div id="mc_embed_signup" style="background-color: #EDEBEC;">
 <form action="https://tech.us20.list-manage.com/subscribe/post?u=0d51bf2d96b2349c3a169dcd2&amp;id=b228473c7d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
     <div id="mc_embed_signup_scroll">
 	
