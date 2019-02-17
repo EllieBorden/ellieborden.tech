@@ -1,6 +1,7 @@
 ---
 layout: "post"
 title: "Domain Testing"
+comments: true
 date: "2019-02-12 16:14"
 ---
 
