@@ -3,9 +3,9 @@ layout: page
 title: About
 ---
 
-ellieborden.tech is a bland and boring blog for anyone interested in software quality. Its topics are based on technical books, industry trends, and my personal experiences.
+ellieborden.tech is a blog for anyone interested in software quality. Its topics are based on technical books, industry trends, and my personal experiences.
 
-![profile picture](../assets/images/0.png){:.profile-pic}
+![profile picture](../assets/images/0.jpeg){:.profile-pic}
 
 My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan but am currently traveling the US with my partner. I love testing. I'm also passionate about technical writing and open source. 
 
