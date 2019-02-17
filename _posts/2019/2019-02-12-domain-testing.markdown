@@ -24,7 +24,7 @@ Partitioning, as it relates to domain testing, is the act of splitting a set int
 
 Equivalence describes a state of equality.
 
-In equivalence partitioning, all potential test values are grouped into classes known as **Equivalence Classes (ECs)**. All members of an equivalence class are assumed to yield the same result in test. 
+In equivalence partitioning, all potential test values are grouped into classes known as **Equivalence Classes (ECs)**. All members of an equivalence class are assumed to yield the same test results. 
 	
 There are two types of equivalence classes:
 
@@ -79,13 +79,13 @@ Since those values were already selected to represent their classes, we've alrea
 
 ## Limitations.
 
-Equivalence is subjective. The effectiveness of this method depends on the testers ability to determine equivalence classes and to select representatives of those classes. Values that have the highest potential to cause errors (such as boundary values) should be chosen to represent their equivalence class when possible.  
+Equivalence is subjective. The effectiveness of this method depends on the tester's ability to determine equivalence classes and to select representatives of those classes. Values that have the highest potential to cause errors (such as boundary values) should be chosen to represent their equivalence class when possible.  
 
 Additionally, domain testing is one of many techniques and should not be the only one considered when testing.
 
 ## Resources
 
-The example we discussed is very simple. Domain testing can be executed on a variety of complex problems. [_The Domain Testing Workbook_](https://www.amazon.com/Domain-Testing-Workbook-Cem-Kaner/dp/0989811905) contains examples of some of those use cases and elaborates on these techniques in greater detail. It's the best resource I've found on this subject. Other decent books are listed in the references section below.
+The example we discussed is very simple. Domain testing can be executed on a variety of complex problems. [_The Domain Testing Workbook_](https://www.amazon.com/Domain-Testing-Workbook-Cem-Kaner/dp/0989811905) contains examples of some of those use cases and elaborates on these techniques in greater detail. It's the best resource I've found on this subject. Other related books are listed in the references section below.
 
 [_Big List of Naughty Strings_](https://github.com/minimaxir/big-list-of-naughty-strings/blob/master/blns.txt) is an evolving list of potential inputs that have a high probability of causing errors. 
 

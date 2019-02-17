@@ -16,7 +16,7 @@ NOTE: This is on hold (potentially indefinitely) due to lack of time and too muc
 - [**Software Testing Wiki**](https://ellieborden.github.io/Software-Testing-Wiki/) - A searchable collection of notes, templates, and checklists for testers. (Early stage, work in Progress.) 
 -->
 
-- [**Cherrytree User Manual**](http://giuspen.com/cherrytreemanual/) - A user guide for Cherrytree, a hierarchical note-taking application.
+- [**Cherrytree User Manual**](https://giuspen.com/cherrytreemanual/) - A user guide for Cherrytree, a hierarchical note-taking application.
 
 Contact me at the email address listed below if you're interested in contributing to any of those. 
 
