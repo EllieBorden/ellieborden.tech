@@ -33,10 +33,7 @@ blockquote,
 table,
 img,
 hr,
-.fluid-width-video-wrapper,
-.highlight {
-  margin-bottom: 20px;
-}
+.fluid-width-video-wrapper{margin-bottom: 20px;}
 
 blockquote {
   padding: 0 30px;
@@ -67,15 +64,15 @@ hr {
 
 code {
   font-family: Consolas, "Liberation Mono", Courier, monospace;
-  font-size: .8rem;
+  font-size: .9rem;
 }
 
 p code {
-  padding: 0px 5px;
-  border: 1px solid #ddd;
-  background-color: #f8f8f8;
+  padding: 3px 5px;
+  border: 1px solid #ccc;
+  background-color: #e9e9e9;
   border-radius: 3px;
-  white-space: nowrap;
+  /* white-space: nowrap; */
 }
 
 table {
@@ -303,15 +300,21 @@ footer {
 ================================================================================
 */
 .highlight {
-  padding: 30px;
+  width: 95%;
+  margin: 0 auto;
+  padding: 5px;
+  border: #ccc;
   border-radius: 6px;
-  background-color: #272822;
+  /* background-color: #d0d0d0; */
+  white-space: normal !important;
   color: #f8f8f2;
-  line-height: 1;
+  line-height: 1.2;
 }
 
+div.highlight {margin-bottom: 20px;}
+
 .highlight code {
-  font-size: .7rem;
+  font-size: .9rem;
 }
 
 /*
