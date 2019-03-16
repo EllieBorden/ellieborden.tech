@@ -17,7 +17,7 @@ Testers have a finite amount of time and resources, so it's important to design 
 
 ## Techniques
 
-There are two domain testing technique, Equivalence Partitioning and Boundary Value Analysis.
+There are two domain testing techniques, Equivalence Partitioning and Boundary Value Analysis.
 
 ### Equivalence Partitioning
   
@@ -78,7 +78,7 @@ Referring to the previous example, its valid boundary values are **1** and **100
 
 Since those values were already selected to represent their classes, we've already performed boundary value analysis on that input. 
 
-## Limitations.
+## Limitations
 
 Equivalence is subjective. The effectiveness of this method depends on the tester's ability to determine equivalence classes and to select representatives of those classes. Values that have the highest potential to cause errors (such as boundary values) should be chosen to represent their equivalence class when possible.  
 
