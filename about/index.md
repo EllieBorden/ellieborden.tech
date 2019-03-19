@@ -7,7 +7,7 @@ ellieborden.tech is a blog for anyone interested in software development and tes
 
 ![profile picture](../assets/images/0.jpeg){:.profile-pic}
 
-My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan but am traveling the US with my partner. I'm passionate about testing, writing, and free software.
+My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan but am traveling the US with my partner. I'm passionate about books, testing, writing, and free software.
 
 **I'm currently involved in the following project(s):**
 
