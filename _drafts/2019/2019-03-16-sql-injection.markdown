@@ -5,7 +5,7 @@ comments: true
 date: "2019-03-16 8:00"
 ---
 
-SQL injection is the submission of SQL syntax to a vulnerable input field, which is then used by an application in the dynamic construction of a database query. This attack is possible when user input is insufficiently validated and can be interpreted by a database management system (DBMS) as code. A malicious user can inject SQL to disrupt or alter queries to the database, potentially leading to the exposure of sensitive data such as usernames, passwords, and credit card numbers.
+SQL injection (SQLi) is the submission of SQL syntax to a vulnerable input field, which is then used by an application in the dynamic construction of a database query. This attack is possible when user input is insufficiently validated and can be interpreted by a database management system (DBMS) as code. A malicious user can inject SQL to disrupt or alter queries to the database, potentially leading to the exposure of sensitive data such as usernames, passwords, and credit card numbers.
 
 This guide aims to serve as an introduction to testing for SQL injection and walks through the following operations:
 
@@ -14,6 +14,10 @@ This guide aims to serve as an introduction to testing for SQL injection and wal
 - Confirmation and exploitation the vulnerability.
 - Best practices for reporting security vulnerabilities.
 
+Tools are not used in this exercise, however, some popular tools will be listed in the **Resources** section below.
+
+Code review for SQL injection will be covered in a later post.
+
 ## Test Responsibly
 
 Read this section before continuing to the demonstration. I'm not accountable for anything you break using the information in this post.
@@ -21,26 +25,23 @@ Read this section before continuing to the demonstration. I'm not accountable fo
 ### DON'T do it Yourself
 
 This guide is intended for people who are interested in learning about security. It should **NOT** be used by website owners for do-it-yourself security testing. The effectiveness of SQL injection greatly depends on the skill of the tester. Please hire a security expert or team of experts if you require thorough testing.
- 
+
 ### DON'T Test Without Permission
 
-- Illegal https://www.law.cornell.edu/uscode/text/18/1030
-- Do not begin testing before defining the **Rules of Engagement**.
-- Require proof of ownership
+Testing a live application without its owner's consent can result in legal ramifications. Do not begin testing without written permission, a defined scope, and defined rules of engagement. You should also be confident that the person permitting security testing owns the property or has the authority to authorize testing.
 
 ### Avoid Testing Live Environments
 
-- corrupted database
-- server interference
+It is possible to delete or overwrite data by injecting SQL into a database query. I highly recommend creating a copy of your application to be used specifically for testing -- especially while you're learning. If you must test an application in production, confirm there are backups of its data first.
 
 ## Test Environment Setup
 
-For this demonstration, I'm using a test-application called bWAPP (Buggy Web Application). 
+For this demonstration, I'm using a test-application called bWAPP (Buggy Web Application).
 
-### Installing bWAPP 
+### Installing bWAPP
 
 1. Download bWAPP from [itsecgames.com](http://www.itsecgames.com/) as either a compressed folder of source files, which can be installed to any PHP/MySQL development environment such as [WAMP](http://www.wampserver.com/en/) or pre-installed as part of a custom Linux virtual machine called _bee-box_.  
-2. Extract the source files, then move the **bWAPP** folder to your root server directory ('C:\wamp64\www' for WAMP).
+2. Extract the source files, then move the **bWAPP** folder to your root server directory (E.g. 'C:\wamp64\www' for WAMP).
 3. Open **bWAPP/admin/settings.php**, then configure **$db_username** and **$db_password** to match your MySQL login credentials.
 4. While your server is running, open **bwapp/install.php** in a browser, then click the installation link. This will create a database for the application and redirect you to a login page.
 5. Login to bWAPP. The default username is **bee** and password is **bug**.
@@ -58,8 +59,7 @@ If you encounter other errors, post them in a comments section below.
 
 ## Testing
 
-- beginning to test
-- presumably have permission
+We are testing the search box on **bwapp/sqli_1.php**. Navigate to this page to begin.
 
 ### Identify Inputs
 
@@ -67,11 +67,13 @@ If you encounter other errors, post them in a comments section below.
 - POST
 - COOKIES
 - Headers
-- - Types of sql injection
+
 
 ### Test Inputs
 
 One input at a time
+
+Types of SQL injection
 
 - bypassing intrusion detection
   - encoding
@@ -102,23 +104,24 @@ One input at a time
 
 ## Resources
 
-- we only covered the basics
-- continue learning
-- focus on the behaviors of popular DBMS or your organization's DBMS
+We have only covered a basic example of SQL injection, which does not account for custom error messages, out-of-band injection, partial validation, intrusion prevention systems, or other advanced defenses that are encounter in real-world testing. See the resources provided below to continue learning and become a more efficient tester.
+
+All resources are free, apart from _SQL Injection Attacks and Defense, 2nd ed_. Most items are followed by a year in parenthesis which represents the last year that resource was updated as of the date of this publication.
 
 ### Learning SQL
 
-- [SQLBolt](https://sqlbolt.com/)
-- [Code Academy](https://www.codecademy.com/learn/learn-sql)
+- [SQLBolt](https://sqlbolt.com/) - Interactive website for learning SQL.
 - [Hacker Rank](https://www.hackerrank.com/domains/sql?filters%5Bstatus%5D%5B%5D=unsolved&badge_type=sql) - This site doesn't teach SQL but hosts a collection of SQL practice-questions ranging in complexity.
 
 ### Learning SQL Injection
 
-- [SQL Injection Attacks and Defense, 2n ed](https://www.amazon.com/Injection-Attacks-Defense-Justin-Clarke/dp/1597499633/ref=sr_1_2?keywords=sql+injection+book&qid=1552931384&s=gateway&sr=8-2) - The most thorough introduction to SQL injection available. (Published in 2012.)
-  
-- [OWASP - Vulnerable web applications](https://www.owasp.org/index.php/OWASP_Vulnerable_Web_Applications_Directory_Project#tab=Main) - A list of vulnerable web applications for practicing security testing.
+- [SQL Injection Attacks and Defense, 2nd ed](https://www.amazon.com/Injection-Attacks-Defense-Justin-Clarke/dp/1597499633/ref=sr_1_2?keywords=sql+injection+book&qid=1552931384&s=gateway&sr=8-2) - The most thorough introduction to SQL injection available. (2012)
 
-- [OWASP - Penetration testing methodologies](https://www.owasp.org/index.php/Penetration_testing_methodologies)
+- [OWASP - Vulnerable web applications](https://www.owasp.org/index.php/OWASP_Vulnerable_Web_Applications_Directory_Project#tab=Main) - A list of vulnerable web applications, written in various technologies, for practicing security testing. (2018)
+
+- [Devilbox](https://github.com/cytopia/devilbox) - A Docker image providing local, quickly customizable, LAMP and MEAN development environments. (2019)
+
+- [OWASP - Penetration testing methodologies](https://www.owasp.org/index.php/Penetration_testing_methodologies) (2019)
 
 ### Testing References
 
@@ -129,12 +132,28 @@ Known Vulnerabilities:
 
 Payloads:
 
-- [NetSPI - SQL attack queries](https://sqlwiki.netspi.com/attackQueries/)
-- [Bug bounty cheat sheet - SQLi](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/sqli.md) - An unordered list of relevant cheat sheets. (Last updated in 2017.)
+- [NetSPI - SQL attack queries](https://sqlwiki.netspi.com/attackQueries/) (2019)
+- [Bug bounty cheat sheet - SQLi](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/sqli.md) - An unordered list of relevant cheat sheets. (2017)
 
 Miscellaneous:
 
-- [OWASP - Bypassing firewalls](https://www.owasp.org/index.php/SQL_Injection_Bypassing_WAF)
+- [OWASP - Bypassing firewalls](https://www.owasp.org/index.php/SQL_Injection_Bypassing_WAF) (2017)
+
+### Open Source Tools
+
+- [Metasploit](https://github.com/rapid7/metasploit-framework) (2019)
+- [OWASP-ZAP](https://github.com/zaproxy/zaproxy) (2019)
+- [SQLMap](https://github.com/sqlmapproject/sqlmap) (2019)
+- [SQLNinja](https://sourceforge.net/projects/sqlninja/) (2014)
+
+### Reporting
+
+- [OWASP - Vulnerability disclosure cheat sheet](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Vulnerability_Disclosure_Cheat_Sheet.md) (2019)
+
+### Legal
+
+- [Computer Crime Research Center - Legislation](http://www.crime-research.org/legislation/)
+- [Fraud and related activity in connection with computers (U.S.)](https://www.law.cornell.edu/uscode/text/18/1030)
 
 ## References
 

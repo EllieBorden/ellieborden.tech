@@ -3,7 +3,7 @@ layout: page
 title: About
 ---
 
-ellieborden.tech is a blog for anyone interested in software development and testing. Its topics are primarily based on technical books and free web content. 
+ellieborden.tech is a blog for anyone interested in software development and testing. Its topics are primarily based on technical books and free web content.
 
 ![profile picture](../assets/images/0.jpeg){:.profile-pic}
 
@@ -11,25 +11,25 @@ My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan b
 
 **I'm currently involved in the following project(s):**
 
-<!-- 
+<!--
 NOTE: This is on hold (potentially indefinitely) due to lack of time and too much overlap with my aspirations for this blog.
-- [**Software Testing Wiki**](https://ellieborden.github.io/Software-Testing-Wiki/) - A searchable collection of notes, templates, and checklists for testers. (Early stage, work in Progress.) 
+- [**Software Testing Wiki**](https://ellieborden.github.io/Software-Testing-Wiki/) - A searchable collection of notes, templates, and checklists for testers. (Early stage, work in Progress.)
 -->
 
-- [**Cherrytree User Manual**](https://giuspen.com/cherrytreemanual/) - A user guide for Cherrytree, a hierarchical note-taking application. 
+- [**Cherrytree User Manual**](https://github.com/EllieBorden/Cherrytree-Manual) - A user guide for Cherrytree, a hierarchical note-taking application. 
 
 I'm also potentially interested in getting involved with other free and open source projects. Email me at the address below if you're seeking testing or documentation for your application.
 
 ## Subscribe
 
-Subscribe to my newsletter to receive notifications when new content is posted. 
+Subscribe to my newsletter to receive notifications when new content is posted.
 
 <!-- Begin Mailchimp Signup Form -->
 <link href="/assets/css/mailchimp.css" rel="stylesheet" type="text/css">
 <div id="mc_embed_signup" style="background-color: #EDEBEC;">
 <form action="https://tech.us20.list-manage.com/subscribe/post?u=0d51bf2d96b2349c3a169dcd2&amp;id=b228473c7d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
     <div id="mc_embed_signup_scroll">
-	
+
 <div class="indicates-required"><span class="asterisk">*</span> indicates required</div>
 <div class="mc-field-group">
 	<label for="mce-EMAIL">Email Address  <span class="asterisk">*</span>
@@ -47,8 +47,8 @@ Subscribe to my newsletter to receive notifications when new content is posted.
 <div class="mc-field-group size1of2">
 	<label for="mce-BIRTHDAY-month">Birthday </label>
 	<div class="datefield">
-		<span class="subfield monthfield"><input class="birthday " type="text" pattern="[0-9]*" value="" placeholder="MM" size="2" maxlength="2" name="BIRTHDAY[month]" id="mce-BIRTHDAY-month"></span> / 
-		<span class="subfield dayfield"><input class="birthday " type="text" pattern="[0-9]*" value="" placeholder="DD" size="2" maxlength="2" name="BIRTHDAY[day]" id="mce-BIRTHDAY-day"></span> 
+		<span class="subfield monthfield"><input class="birthday " type="text" pattern="[0-9]*" value="" placeholder="MM" size="2" maxlength="2" name="BIRTHDAY[month]" id="mce-BIRTHDAY-month"></span> /
+		<span class="subfield dayfield"><input class="birthday " type="text" pattern="[0-9]*" value="" placeholder="DD" size="2" maxlength="2" name="BIRTHDAY[day]" id="mce-BIRTHDAY-day"></span>
 		<span class="small-meta nowrap">( mm / dd )</span>
 	</div>
 </div>	<div id="mce-responses" class="clear">
