@@ -130,7 +130,7 @@ Known Vulnerabilities:
 - [Exploit Database](https://www.exploit-db.com/)
 - [National Vulnerability Database](https://nvd.nist.gov/vuln/search)
 
-Payloads:
+Payloads: 
 
 - [NetSPI - SQL attack queries](https://sqlwiki.netspi.com/attackQueries/) (2019)
 - [Bug bounty cheat sheet - SQLi](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/sqli.md) - An unordered list of relevant cheat sheets. (2017)
