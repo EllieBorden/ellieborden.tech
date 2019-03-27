@@ -7,6 +7,8 @@ date: "2019-03-16 8:00"
 
 SQL injection (SQLi) is the submission of SQL syntax to a vulnerable input field, which is then used by an application in the dynamic construction of a database query. This attack is possible when user input is insufficiently validated and can be interpreted by a database management system (DBMS) as code. A malicious user can inject SQL to disrupt or alter queries to the database, potentially leading to the exposure of sensitive data such as usernames, passwords, and credit card numbers.
 
+### Agenda
+
 This guide aims to serve as an introduction to testing for SQL injection and walks through the following operations:
 
 - Installation of a test environment.
@@ -17,6 +19,16 @@ This guide aims to serve as an introduction to testing for SQL injection and wal
 Tools are not used in this exercise, however, some popular tools will be listed in the **Resources** section below.
 
 Code review for SQL injection will be covered in a later post.
+
+### Prerequisites
+
+To get the most out of this guide, you'll need to be familiar with the HyperText Transfer Protocol (HTTP) and the following languages:
+
+- HTML
+- PHP
+- SQL
+
+If you wish to follow along, you'll also need to configure an Apache/PHP/MySQL environment.
 
 ## Test Responsibly
 
@@ -53,7 +65,7 @@ Installation steps and detailed requirements are listed in **install.txt**, whic
 
 ### Troubleshooting
 
-bWAPP/sqli_1.php connects to a database using **mysql_connect()**. This function was deprecated in PHP 5.5.0 and removed in PHP 7.0.0. If you receive a fatal error: **Call to undefined function mysql_connect()** while trying to use the search feature on this page, consider downgrading from PHP 7 to PHP 5 for this test only.
+bWAPP/sqli_1.php connects to a database using **mysql_connect()**. This function was deprecated in PHP 5.5.0 and removed in PHP 7.0.0. If you receive a fatal error: **Call to undefined function mysql_connect()** while trying to use the search feature on this page, consider downgrading from PHP 7 to PHP 5 for this test only. Real PHP applications should run on an updated version of PHP and use [PHP Data Objects (PDO)](https://www.php.net/manual/en/book.pdo.php) to perform database queries.
 
 If you encounter other errors, post them in a comments section below.
 
@@ -63,11 +75,42 @@ We are testing the search box on **bwapp/sqli_1.php**. Navigate to this page to 
 
 ### Identify Inputs
 
-- GET
-- POST
-- COOKIES
-- Headers
+First, we need to identify all sources of user input within the scope of our test. In this example, we are exclusively testing the **Search for a movie** form, however, a typical scope could potentially include one or more inputs, features, or pages.
 
+User input is commonly submitted in the form of a GET or POST request, but can also be included in cookies and request headers. Any input on the client-side can be manipulated by a user. This also applies to obscure elements such as hidden form inputs, which are not displayed on a page but can be seen and manipulated in the page's source code. 
+
+Radio buttons and checkboxes are another example. While those elements are typically only checked or unchecked, their values can be edited in the source code.
+
+> **NOTE**: This is why it is imperative to validate input server-side. If a form is only validated by the user's client, they can easily edit or delete the validation before submission.
+
+[View the page source](https://www.lifewire.com/view-web-source-code-4151702) and scroll down to the **Search for a movie** form.
+
+
+```html
+<form action="/sqli_1.php" method="GET">
+
+  <p>
+
+  <label for="title">Search for a movie:</label>
+  <input type="text" id="title" name="title" size="25">
+
+  <button type="submit" name="action" value="search">Search</button>
+
+  </p>
+
+</form>
+```
+
+Looking at the source code, we can see two input variables:
+
+- **title** is defined in the **input** element and is assigned a value of whichever string is in the textbox upon form-submission.
+- **action** is defined in the **button** element and is assigned the value **"search"** upon submission.
+
+We can also confirm that there are no hidden inputs and that the data is submitted through a GET request.
+
+use proxy for other methods
+
+determine crud action
 
 ### Test Inputs
 
@@ -119,7 +162,7 @@ All resources are free, apart from _SQL Injection Attacks and Defense, 2nd ed_. 
 
 - [OWASP - Vulnerable web applications](https://www.owasp.org/index.php/OWASP_Vulnerable_Web_Applications_Directory_Project#tab=Main) - A list of vulnerable web applications, written in various technologies, for practicing security testing. (2018)
 
-- [Devilbox](https://github.com/cytopia/devilbox) - A Docker image providing local, quickly customizable, LAMP and MEAN development environments. (2019)
+- [Devilbox](https://github.com/cytopia/devilbox) - A Docker composition providing local, quickly customizable, LAMP and MEAN development environments. (2019)
 
 - [OWASP - Penetration testing methodologies](https://www.owasp.org/index.php/Penetration_testing_methodologies) (2019)
 

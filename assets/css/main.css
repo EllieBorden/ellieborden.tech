@@ -301,24 +301,19 @@ footer {
   Code highlighting
 ================================================================================
 */
-.highlight {
-  width: 95%;
-  margin: 0 auto;
-  padding: 5px;
-  border: #ccc;
-  border-radius: 6px;
-  /* background-color: #d0d0d0; */
-  white-space: normal !important;
-  color: #f8f8f2;
-  line-height: 1.2;
-}
 
-div.highlight {margin-bottom: 20px;}
+.highlight {
+  padding: 30px;
+  border-radius: 6px;
+  color: #f8f8f2;
+  line-height: 1;
+  overflow: auto;
+}
 
 .highlight code {
-  font-size: .9rem;
+  font-size: .9em;
+  white-space: pre-wrap;
 }
-
 /*
 ================================================================================
   Single page styles
@@ -327,7 +322,7 @@ div.highlight {margin-bottom: 20px;}
 
 .single {
   font-size: 1.125rem;
-  line-height: 28px;
+  line-height: 26px;
 }
 
 .single time {
