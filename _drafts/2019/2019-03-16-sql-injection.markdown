@@ -79,7 +79,7 @@ First, we need to identify all sources of user input within the scope of our tes
 
 User input is commonly submitted in the form of a GET or POST request, but can also be included in cookies and request headers. Any input on the client-side can be manipulated by a user. This also applies to obscure elements such as hidden form inputs, which are not displayed on a page but can be seen and manipulated in the page's source code. 
 
-Radio buttons and checkboxes are another example. While those elements are typically only checked or unchecked, their values can be edited in the source code.
+Radio buttons and checkboxes are other examples. While those elements are typically only checked or unchecked, their values can be edited in the source code.
 
 > **NOTE**: This is why it is imperative to validate input server-side. If a form is only validated by the user's client, they can easily edit or delete the validation before submission.
 
@@ -101,20 +101,59 @@ Radio buttons and checkboxes are another example. While those elements are typic
 </form>
 ```
 
-Looking at the source code, we can see two input variables:
+We can see two input variables:
 
 - **title** is defined in the **input** element and is assigned a value of whichever string is in the textbox upon form-submission.
 - **action** is defined in the **button** element and is assigned the value **"search"** upon submission.
 
-We can also confirm that there are no hidden inputs and that the data is submitted through a GET request.
+We can also confirm that there are no hidden inputs and that the data is submitted through a GET request. This is reflected in the URL when we enter the word "test" into the form, then click **Search**:
 
-use proxy for other methods
+{:style="text-align: center;"}
+```url
+bwapp/sqli_1.php?title=test&action=search
 
-determine crud action
+```
 
-### Test Inputs
+For other request methods, you may need to use a proxy server, such as the one available in the free and open source application [ZAP](https://github.com/zaproxy/zaproxy), to see and edit the data being transferred.
 
-One input at a time
+### Identify the Inputs' Applications
+
+Now that we have identified the inputs in the **Search for a movie** form, we can try to identify how those inputs are being used. It is important to keep all variables constant except the one being tested so that the results can be attributed to a single cause.
+
+Alter the URL parameters to perform the following tests on the **title** variable:
+
+URL Parameters                | Result
+------------------------------|---------------------------------------------------------------------------------
+?title=1&action=search        | 'No movies were found!' is returned.
+?title=&action=search         | Presumably all movies are returned.
+?action=search                | Nothing is returned.
+?title=**iron**&action=search | Presumably all movies containing the word 'the' (case-insensitive) are returned.
+
+Given these results, we can determine that the **title** variable is being used in an SQL query that probably looks similar to: 
+
+```sql
+SELECT title, release, character, genre, imdb 
+FROM movie
+WHERE title LIKE '%title%'
+ORDER BY title ASC;
+
+/* Where in "..LIKE '%title%'", title is equal to $_GET["title"], which may or may not be validated, and % is a wildcard representing one or more characters. */
+```
+
+Now test the **action** variable:
+
+URL Parameters      | Result
+--------------------|------------------------------------
+?title=&action=1    | Presumably all movies are returned.
+?title=&action=test | Presumably all movies are returned.
+?title=&action=     | Presumably all movies are returned.
+?title=             | Presumably all movies are returned.
+
+The **action** variable is not affecting an SQL query within our test scope and is therefore probably not a potential candidate for SQL injection.
+
+> **NOTE**: We are performing black box testing, however, if we were referencing the server-side code in our test, we could confirm that **$\_GET["action"]** is not used anywhere within scope.
+
+### Inject SQL Payloads
 
 Types of SQL injection
 
@@ -123,8 +162,6 @@ Types of SQL injection
   - Whitespace
   - null characters
   - commenting
-
-### Confirm SQL Injection
 
 - complete a modified sql query
 - stacked queries
