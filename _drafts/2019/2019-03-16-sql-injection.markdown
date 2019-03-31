@@ -71,7 +71,7 @@ If you encounter other errors, post them in a comments section below.
 
 ## Testing
 
-We are testing the search box on **bwapp/sqli_1.php**. Navigate to this page to begin.
+Navigate to the search box on page **bwapp/sqli_1.php** to begin. 
 
 ### Identify Inputs
 
@@ -101,7 +101,7 @@ Radio buttons and checkboxes are other examples. While those elements are typica
 </form>
 ```
 
-We can see two input variables:
+This form contains two input variables:
 
 - **title** is defined in the **input** element and is assigned a value of whichever string is in the textbox upon form-submission.
 - **action** is defined in the **button** element and is assigned the value **"search"** upon submission.
@@ -118,7 +118,7 @@ For other request methods, you may need to use a proxy server, such as the one a
 
 ### Identify the Inputs' Applications
 
-Now that we have identified the inputs in the **Search for a movie** form, we can try to identify how those inputs are being used. It is important to keep all variables constant except the one being tested so that the results can be attributed to a single cause.
+Now that all of the inputs within our scope have been identified, we can try to determine how those inputs are used by the application. It is important to keep all variables constant except the one being tested so that the results can be attributed to a single cause.
 
 Alter the URL parameters to perform the following tests on the **title** variable:
 
@@ -127,7 +127,7 @@ URL Parameters                | Result
 ?title=1&action=search        | 'No movies were found!' is returned.
 ?title=&action=search         | Presumably all movies are returned.
 ?action=search                | Nothing is returned.
-?title=**iron**&action=search | Presumably all movies containing the word 'the' (case-insensitive) are returned.
+<span style="white-space: nowrap;">?title=iron&action=search</span> | Presumably all movies containing the word 'the' (case-insensitive) are returned.
 
 Given these results, we can determine that the **title** variable is being used in an SQL query that probably looks similar to: 
 
@@ -137,7 +137,7 @@ FROM movie
 WHERE title LIKE '%title%'
 ORDER BY title ASC;
 
-/* Where in "..LIKE '%title%'", title is equal to $_GET["title"], which may or may not be validated, and % is a wildcard representing one or more characters. */
+/* Where in "..LIKE '%title%'", title is equal to $_GET["title"], which is a string and may or may not be validated, and % is a wildcard representing one or more characters. */
 ```
 
 Now test the **action** variable:
@@ -153,21 +153,136 @@ The **action** variable is not affecting an SQL query within our test scope and 
 
 > **NOTE**: We are performing black box testing, however, if we were referencing the server-side code in our test, we could confirm that **$\_GET["action"]** is not used anywhere within scope.
 
-### Inject SQL Payloads
+### Inject SQL
 
-Types of SQL injection
+In this section, we're injecting SQL into the URL's **title** parameter. Since **title** accepts a string value and is likely wrapped in quotes, try to create a syntax error by submitting unpaired quotation marks.
 
-- bypassing intrusion detection
-  - encoding
-  - Whitespace
-  - null characters
-  - commenting
+URL Parameters         | Result
+-----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<span style="white-space: nowrap;">?title='&action=search</span> | 'Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1' is returned.
+<span style="white-space: nowrap;">?title="&action=search</span> | 'No movies were found!' is returned.
 
-- complete a modified sql query
-- stacked queries
+The application returns a MySQL error indicating single quotes are being interpreted as code and break the query:
+
+<!-- 
+The following codeblock messes up syntax highlighting beneath it if not converted to HTML.
+============================= ORIGINAL INPUT =============================
+
+
+```sql
+/* ?title=iron */
+
+SELECT title, release, character, genre, imdb 
+FROM movie
+WHERE title LIKE '%iron%'
+ORDER BY title ASC;
+
+
+/* ?title=' */
+
+SELECT title, release, character, genre, imdb 
+FROM movie
+WHERE title LIKE '%'%'
+ORDER BY title ASC;  
+``` 
+
+=============================== OUTPUT ===================================  
+-->
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Visualization of the Potential Database Queries */</span>
+
+
+<span class="cm">/* ?title=iron */</span>
+
+<span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
+<span class="k">FROM</span> <span class="n">movie</span>
+<span class="k">WHERE</span> <span class="n">title</span> <span class="k">LIKE</span> <span class="s1">'%iron%'</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">title</span> <span class="k">ASC</span><span class="p">;</span>
+
+
+<span class="cm">/* ?title=' */</span>
+
+<span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
+<span class="k">FROM</span> <span class="n">movie</span>
+<span class="k">WHERE</span> <span class="n">title</span> <span class="k">LIKE</span> <span class="s1">'%'</span><span class="o">%</span><span class="s1">'
+ORDER BY title ASC; 
+</span></code></pre></div></div>
+
+<!-- ===================================================================  -->
+
+> **NOTE**: It is almost never this easy. Most applications have partial validation or are protected by firewalls and intrusion prevention software. Some techniques for bypassing common defenses include:
+>
+- Adding whitespace
+- Changing the case of keywords
+- Character encoding
+- Null bytes
+- Replacing spaces with comments
+- URL encoding
+>
+>Pay attention to how the DBMS reacts to your query and adjust accordingly. See the resources provided below for more information on bypassing defenses.
+
+Now compare the following tests:
+
+URL Parameters                        | Result
+--------------------------------------|------------------------------------
+?test=iron&action=Search              | The movie 'Iron Man' is returned.
+?title=iron'+or+1=1+-\-+&action=search | Presumably all movies are returned.
+
+The second request queries the database to select all movies where the title is like "%iron%" or where 1 is equal to 1. Since 1 is always equal to 1, the database selects all movies. The hypens at the end comments out everything that follows, preventing the DBMS from parsing the remainder of the query.
+
+<!-- 
+The following codeblock messes up syntax highlighting beneath it if not converted to HTML.
+============================= ORIGINAL INPUT =============================
+```sql
+/* ?title=iron */
+
+SELECT title, release, character, genre, imdb 
+FROM movie
+WHERE title LIKE '%iron%'
+ORDER BY title ASC;
+
+
+/* ?title=' */
+
+SELECT title, release, character, genre, imdb 
+FROM movie
+WHERE title LIKE '%iron' OR 1=1 -- %'
+ORDER BY title ASC;  
+``` 
+=============================== OUTPUT ===================================  
+-->
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Visualization of the Potential Database Queries */</span>
+
+
+<span class="cm">/* ?title=iron */</span>
+
+<span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
+<span class="k">FROM</span> <span class="n">movie</span>
+<span class="k">WHERE</span> <span class="n">title</span> <span class="k">LIKE</span> <span class="s1">'%iron%'</span>
+<span class="k">ORDER</span> <span class="k">BY</span> <span class="n">title</span> <span class="k">ASC</span><span class="p">;</span>
+
+
+<span class="cm">/* ?title=' */</span>
+
+<span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
+<span class="k">FROM</span> <span class="n">movie</span>
+<span class="k">WHERE</span> <span class="n">title</span> <span class="k">LIKE</span> <span class="s1">'%iron'</span> <span class="k">OR</span> <span class="mi">1</span><span class="o">=</span><span class="mi">1</span> <span class="c1">-- %'</span>
+<span class="c1">ORDER</span> <span class="c1">BY</span> <span class="c1">title</span> <span class="c1">ASC</span><span class="c1">;</span>  
+</code></pre></div></div>
+
+<!-- ===================================================================  -->
+
+### Types of SQL Injection
+
+- error
+- union 
+- blind
+- database repsonses
 
 ### Identify A Vulnerability
 
+- stacked queries
 - fingerprint database management system
 - fingerprint user
 - get databases
@@ -213,11 +328,13 @@ Known Vulnerabilities:
 Payloads:
 
 - [NetSPI - SQL attack queries](https://sqlwiki.netspi.com/attackQueries/) (2019)
+- [fuzzdb](https://github.com/fuzzdb-project/fuzzdb/tree/master/attack/sql-injection/detect) (2016)
 - [Bug bounty cheat sheet - SQLi](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/sqli.md) - An unordered list of relevant cheat sheets. (2017)
 
-Miscellaneous:
+Bypassing Firewalls:
 
 - [OWASP - Bypassing firewalls](https://www.owasp.org/index.php/SQL_Injection_Bypassing_WAF) (2017)
+- [CWH Underground -Beyond SQLi: Obfuscate and Bypass](https://www.exploit-db.com/papers/17934) (2011)
 
 ### Open Source Tools
 
