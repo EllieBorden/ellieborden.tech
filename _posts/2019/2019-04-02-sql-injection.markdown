@@ -537,8 +537,9 @@ bee   | 1     | bwapp-bee@mailinator.com | 6885858486f31043e5839c735d99457f045af
 
 <!-- ================================================================================= -->
 
+&nbsp;
 
-A malicious user could attempt to decrypt the hashed passwords with tools like John the Ripper or THC Hydra. 
+A malicious user could attempt to crack the hashed passwords with tools like John the Ripper, THC Hydra, or in this case, an [online search](https://duckduckgo.com/?q=6885858486f31043e5839c735d99457f045affd0)
 
 #### Conclusion
 
