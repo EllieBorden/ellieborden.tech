@@ -1,28 +1,27 @@
 ---
 layout: page
-title: About
+title: ellieborden.tech
 ---
 
-ellieborden.tech is a blog for anyone interested in software development and testing. Its topics are primarily based on technical books and free web content.
+ellieborden.tech is my personal blog about software quality and testing. Its topics are primarily based on technical books and tend to emphasize theory and techniques used in various branches of testing. 
+
+You probably won't find a lot of material on tools or automation here.  It feels like most recruiters I talk to are more concerned with test automation than testing. I like Selenium as much as the next girl, but I'm honestly tired of hearing about it.
+
+My goal with this site is to create a free resource that provides depth, for my future-self and other testers who are bored with the average 'types of software testing' articles. I'm also using this as a sort of portfolio for hiring managers who are potentially interested in working together. <span style="font-size: .9rem;"> Seeking remote opportunities; my email is listed below. ;)</span>
+
+## About Me
 
 ![profile picture](../assets/images/0.jpeg){:.profile-pic}
 
-My name is Ellie Borden. I'm a software tester based in Grand Rapids, Michigan but am traveling the US with my partner. I'm passionate about books, testing, writing, and free software.
+My name is Ellie Borden. I'm a software tester with a brief background in automation. I don't spend a lot of time coding these days, but when I do it's not in C#. 
 
-**I'm currently involved in the following project(s):**
+My other interests include writing, jogging, hotAF peppers, radio stuff (KN4UVU), pc-gaming, and leg day. I spend the majority of my time reading -- mostly nonfiction, but the occasional Fantasy or Thriller too.
 
-<!--
-NOTE: This is on hold (potentially indefinitely) due to lack of time and too much overlap with my aspirations for this blog.
-- [**Software Testing Wiki**](https://ellieborden.github.io/Software-Testing-Wiki/) - A searchable collection of notes, templates, and checklists for testers. (Early stage, work in Progress.)
--->
-
-- [**Cherrytree User Manual**](https://github.com/EllieBorden/Cherrytree-Manual) - A user guide for Cherrytree, a hierarchical note-taking application. 
-
-I'm also potentially interested in getting involved with other free and open source projects. Email me at the address below if you're seeking testing or documentation for your application.
+I'm based in Grand Rapids, Michigan but am traveling the US with my lover for his work. He's the lime to my Malibu and cranberry. 
 
 ## Subscribe
 
-Subscribe to my newsletter to receive notifications when new content is posted.
+Subscribe to my newsletter to receive email notifications when new content is posted. Sorry if you had trouble finding this. I really hate newsletter pop-ups.
 
 <!-- Begin Mailchimp Signup Form -->
 <link href="/assets/css/mailchimp.css" rel="stylesheet" type="text/css">
@@ -65,4 +64,4 @@ Subscribe to my newsletter to receive notifications when new content is posted.
 
 ## Contact
 
-Email me at [dev@ellieborden.tech](mailto:dev@ellieborden.tech). Also, feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/bordenellie) and [GitHub](https://github.com/EllieBorden).
+Email me at [dev@ellieborden.tech](mailto:dev@ellieborden.tech) or connect with me on [LinkedIn](https://www.linkedin.com/in/bordenellie) and [GitHub](https://github.com/EllieBorden).
