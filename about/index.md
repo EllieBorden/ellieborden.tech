@@ -3,11 +3,11 @@ layout: page
 title: ellieborden.tech
 ---
 
-ellieborden.tech is my personal blog about software quality and testing. Its topics are primarily based on technical books and tend to emphasize theory and techniques used in various branches of testing. 
+ellieborden.tech is my personal blog about software quality and testing. Its topics are primarily based on technical books and tend to emphasize theory and techniques rather than tools. 
 
-You probably won't find a lot of material on tools or automation here.  It feels like most recruiters I talk to are more concerned with test automation than testing. I like Selenium as much as the next girl, but I'm honestly tired of hearing about it.
+You probably won't find a lot of material on automation here either. I like Selenium as much as the next girl, but I'm honestly tired of hearing about it. <span style="font-size: .9rem;">Looking at you, recruiters from LinkedIn.</span>
 
-My goal with this site is to create a free resource that provides depth, for my future-self and other testers who are bored with the average 'types of software testing' articles. I'm also using this as a sort of portfolio for hiring managers who are potentially interested in working together. <span style="font-size: .9rem;"> Seeking remote opportunities; my email is listed below. ;)</span>
+My goal with this site is to create a free resource for my future-self and other testers who are bored with the surface-level 'types of software testing' articles. 
 
 ## About Me
 
@@ -21,7 +21,7 @@ I'm based in Grand Rapids, Michigan but am traveling the US with my lover for hi
 
 ## Subscribe
 
-Subscribe to my newsletter to receive email notifications when new content is posted. Sorry if you had trouble finding this. I really hate newsletter pop-ups.
+Sorry if you had trouble finding this. I think we can all agree that newsletter pop-ups are obnoxious. Subscribe to my newsletter to receive email notifications when new content is posted. 
 
 <!-- Begin Mailchimp Signup Form -->
 <link href="/assets/css/mailchimp.css" rel="stylesheet" type="text/css">
