@@ -575,11 +575,8 @@ All resources are free, apart from _SQL Injection Attacks and Defense, 2nd ed_. 
 ### Learning SQL Injection
 
 - [SQL Injection Attacks and Defense, 2nd ed](https://www.amazon.com/Injection-Attacks-Defense-Justin-Clarke/dp/1597499633/ref=sr_1_2?keywords=sql+injection+book&qid=1552931384&s=gateway&sr=8-2) - The most thorough introduction to SQL injection available. (2012)
-
 - [OWASP - Vulnerable web applications](https://www.owasp.org/index.php/OWASP_Vulnerable_Web_Applications_Directory_Project#tab=Main) - A list of vulnerable web applications, written in various technologies, for practicing security testing. (2018)
-
 - [Devilbox](https://github.com/cytopia/devilbox) - A Docker composition providing local, quickly customizable, LAMP and MEAN development environments. (2019)
-
 - [OWASP - Penetration testing methodologies](https://www.owasp.org/index.php/Penetration_testing_methodologies) (2019)
 
 ### Testing References
