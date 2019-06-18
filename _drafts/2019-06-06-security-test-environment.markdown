@@ -3,10 +3,9 @@ layout: "post"
 title: "Creating a Security Testing Environment"
 comments: true
 date: "2019-06-06 07:49"
-excerpt_separator: <!--more-->
 ---
 
-The goal of this exercise is to set up an intentionally vulnerable application called Damn Vulnerable Web Application (DVWA) and walks through the following:
+The goal of this exercise is to set up an intentionally vulnerable application called Damn Vulnerable Web Application (DVWA).
 
 ### Prerequisites
 
@@ -81,29 +80,27 @@ You may also want to increase the video memory, under **Display** > **Screen** >
 
 ## Managing the Server
 
-Run the following commands in the corresponding VMs:
+Run the following commands in the server VM.
 
-Update the operating system.
+1. Update the operating system.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`sudo apt update && sudo apt upgrade`
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo apt update && sudo apt upgrade`
 
-Install the server and application dependencies.
+2. Install the server and application dependencies.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`sudo apt-get -y install git apache2 mysql-server php php-mysqli php-gd libapache2-mod-php`
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo apt-get -y install git apache2 mysql-server php php-mysqli php-gd libapache2-mod-php`
 
-Move to **/var/www/html** and clone [DVWA](https://github.com/ethicalhack3r/DVWA) from GitHub using Git.
+3. Move to **/var/www/html** and clone [DVWA](https://github.com/ethicalhack3r/DVWA) from GitHub using Git.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`cd /var/www/html`
+    {:style="overflow: auto; white-space: nowrap;"}
+    `cd /var/www/html`
 
-{:style="overflow: auto; white-space: nowrap;"}
-`sudo git clone https://github.com/ethicalhack3r/DVWA`
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo git clone https://github.com/ethicalhack3r/DVWA`
 
-### Troubleshooting
-
-If you don't have internet, make sure your host machine is connected to the internet and your guest machines are set to the default networking option, NAT.
+> **Troubleshooting**: If you don't have internet, make sure your host machine is connected to the internet and your guest machines are set to the default networking option, NAT.
 
 ## Managing the Client
 
@@ -131,58 +128,224 @@ As far as I know, DVWA does not require internet access to function. I also want
 
 ## Isolating the VMs within an Internal Networking
 
-
-
 ### Creating a DHCP Server
 
-A Dynamic Host Configuration Protocl (DHCP) server assigns 
-[dhcpserver](https://www.virtualbox.org/manual/ch08.html#vboxmanage-dhcpserver) IP addresses to each device within the network and is required to connect to the server from the client.
+A Dynamic Host Configuration Protocl (DHCP) server assigns IP addresses to each device within the network and is required to connect to the server from the client.
 
 To create a DHCP server:
 
 1. Poweroff all guest machines.
 2. Run following command on the host machine to create a new DHCP server, which will assign IP address to guest machines within the internal network.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`vboxmanage dhcpserver add -netname intnet --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.10 --enable`
+    {:style="overflow: auto; white-space: nowrap;"}
+    `vboxmanage dhcpserver add -netname intnet --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.10 --enable`
+
+> **NOTE**: [Click here to learn more about the VBoxManage dhcpserver command.](https://www.virtualbox.org/manual/ch08.html#vboxmanage-dhcpserver)
 
 ### Adding the VMs to the Internal Network
-Complete the following steps for both the client and the server machines:
+Complete the following steps on both the client and server machines:
 
-1. Open Virtualbox
+1. Open Virtualbox.
 2. Right click the machine and select **Settings**.
 3. Move to the **Network** section and under the **Adapter 1** tab, set the **Attached to:** setting to **Internal Network**.
-4. Set the network's name to **intnet**, if it is not already, then click **OK**.
+4. Set the network's name to **intnet**, if it's not already, then click **OK**.
 
 > **NOTE**: The VMs will not be able to connect to the internet while set to Internal Network. If you need to download software or updates, set the VM to NAT networking mode temporarily. 
 
-## Configuring the Server
+### Connecting to the Server from the Client
 
-sudo mysql
-mysql> GRANT ALL PRIVILEGES ON *.* TO 'ellie'@'localhost' IDENTIFIED BY '[password]'
-  mysql> SELECT User FROM mysql.user;
+Start the server and client VMs and login to your accounts.
+
+In the server:
+
+1. Confirm that Apache is running:
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo systemctl status apache2`
   
-## Configuring and Installing DVWA
+2. If the Apache is inactive, start it: 
 
-Please check the [installation directions within the DVWA project-readme](https://github.com/ethicalhack3r/DVWA#installation).
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo systemctl start apache2`
 
-Commands:
-- cd /var/www/html
-- cd DVWA/config
-- sudo cp config.inc.php.dist ./config.inc.php
-- sudo vim config.inc.php
-	- Configure mysql server and credentials.:
-	- db_user = 'ellie'
-	- db_password = '[password]'
-	- default_security_level = 'low'
-	- default_phpids_level = 'disabled'
-	- default_phpids_verbose = 'false'
+3. Find the Ip address of the machine: 
 
-- On your host machine, navigate to localhost:8080/DVWA/setup.php.
-- Click 'Create / Reset Database'
-	- If successful, you will be redirected to login.php.
-	- Else cannot connect to database.
+    {:style="overflow: auto; white-space: nowrap;"}
+    `ifconfig`. 
 
-DVWA Folder Permission Requirements
-- ./hackable/uploads/ - Needs to be writable by the web service (for File Upload).
-- ./external/phpids/0.6/lib/IDS/tmp/phpids_log.txt - Needs to be writable by the web service (if you wish to use PHPIDS).
+     The IP address is likely next to **Inet** and will look like **10.10.10.x** where **x** can be any number between 1 and 10 if you configure the DHCP server using the same parameters I did.
+
+In the client:
+
+1. Open a browser.
+2. Go to the server's IP address by typing it into the address bar. 
+
+If your internal network is succcessfully configured and Apache is running in the server VM, you should be greeted with the Apache welcoming page.
+
+## Configuring the server
+
+1. In the client, move to the DVWA page, **10.10.10.2/DVWA** for me. You should receive the following error message: 
+
+    *DVWA System error - config file not found. Copy config/config.inc.php.dist to config/config.inc.php.*
+
+2. Following the error message directions, copy the configuration file using the following command within the server:
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo cp /var/www/html/DVWA/config/config.inc.php.dist /var/www/html/DVWA/config/config.inc.php`
+
+3. In the client, refresh the page. You should be redirected to **10.10.10.2/DVWA/setup.php**, which contains an instllation checklist.
+
+4. Click **Create / Reset Database**
+
+    We haven't configured MySQL or DVWA so you should receive the following error message: 
+    
+    *Could not connect to the MySQL service. Please check the config file.*
+
+### Creating a new MySQL User
+
+We need to create a new user to use when connecting to the database. Run the following commands in the server VM:
+
+1. Open MySQL.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo mysql`
+
+2. Create the DVWA database.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    mysql> `CREATE DATABASE dvwa;`
+
+3. Create a new user called 'dvwa' with the password 'password123' -- you can use any valid username or password.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    mysql> `GRANT ALL PRIVILEGES ON dvwa.* TO 'dvwa'@'localhost' IDENTIFIED BY 'password123';`
+    
+### Setting the Database Credentials in DVWA
+
+1. Open the DVWA configuration file in a text editor, by running the following command in the server VM:
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo vim /var/www/html/DVWA/config/config.inc.php`
+    
+2. Set the following database variables:
+
+    <!-- 
+    Variable               | Value         |
+    -----------------------|---------------|--
+    $_DVWA['db\_server']   | '127.0.0.1'   |
+    $_DVWA['db\_database'] | 'dvwa'        |
+    $_DVWA['db\_user']     | 'dvwa'        |
+    $_DVWA['db\_password'] | 'password123' | 
+    --> 
+    
+    <!-- ======= HTML for text-alignment consistency ======= -->
+    <table>
+      <thead>
+        <tr>
+          <th style="text-align: center;">Variable</th>
+          <th style="text-align: center;">Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>$_DVWA[‘db_server’]</td>
+          <td>‘127.0.0.1’</td>
+        </tr>
+        <tr>
+          <td>$_DVWA[‘db_database’]</td>
+          <td>‘dvwa’</td>
+        </tr>
+        <tr>
+          <td>$_DVWA[‘db_user’]</td>
+          <td>‘dvwa’</td>
+        </tr>
+        <tr>
+          <td>$_DVWA[‘db_password’]</td>
+          <td>‘password123’</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- ================== END Of TABLE ======================== -->
+    
+3. In the client VM, refresh the installation page and click **Create / Reset Database**. 
+
+    > **NOTE**: Configuring the remaining checklist items on the setup page is covered in the next section of this guide. The database can be reset later by clicking this button again.
+
+  If your database is setup correctly you will see a message at the bottom of the page stating '_Setup Successful!_' before being redirected to the login page.
+
+## Configuring DVWA According to the Setup Check
+
+introduction
+
+### PHP function allow_url_include
+
+If you see disabled on either allow_url_fopen or allow_url_include, set the following in your php.ini file and restart Apache.
+
+allow_url_include = On
+
+{:style="overflow: auto; white-space: nowrap;"}
+`sudo vim /etc/php/7.2/apache2/php.ini`
+
+set allow_url_include = on
+
+{:style="overflow: auto; white-space: nowrap;"}
+`sudo systemctl restart apache2`
+
+refresh page in client
+
+### reCAPTCHA key
+
+https://www.google.com/recaptcha/admin/create
+
+reCAPTCHA v2
+"I'm not a robot" Checkbox
+
+https://github.com/ethicalhack3r/DVWA/commit/3cef5cafa71ca7724c9231ce6aed7e853f4ce787
+
+### File Permissions
+
+Find apache2 users
+ps aux | egrep '(apache|httpd)'
+
+set www folder user and group owner to the apache user
+
+chown -R www-data:www-data /var/www
+
+that should be sufficient. Check with ls -la
+
+if needed change the permissions with sudo chmod -R 755 .
+
+### .htaccess Configuration
+
+If you are using PHP v5.2.6 or above, you will need to do the following in order for SQL injection and other vulnerabilities to work.
+
+{:style="overflow: auto; white-space: nowrap;"}
+`sudo vim /var/www/html/DVWA/.htaccess`
+
+Replace:
+
+```
+<IfModule mod_php5.c>
+    php_flag magic_quotes_gpc off
+    #php_flag allow_url_fopen on
+    #php_flag allow_url_include on
+</IfModule>
+```
+
+With:
+
+```
+<IfModule mod_php5.c>
+    magic_quotes_gpc = Off
+    allow_url_fopen = On
+    allow_url_include = On
+</IfModule>
+```
+
+### Recreate the Database
+recreate the database
+
+## Conclusion
+
+Login with admin/password
+if you have problems, leave a comment below
