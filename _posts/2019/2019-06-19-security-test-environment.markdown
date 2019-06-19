@@ -243,32 +243,34 @@ We need to create a new user to use when connecting to the dvwa database. Run th
     --> 
     
     <!-- ======= HTML for text-alignment consistency ======= -->
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align: center;">Variable</th>
-          <th style="text-align: center;">Value</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>$_DVWA[‘db_server’]</td>
-          <td>‘127.0.0.1’</td>
-        </tr>
-        <tr>
-          <td>$_DVWA[‘db_database’]</td>
-          <td>‘dvwa’</td>
-        </tr>
-        <tr>
-          <td>$_DVWA[‘db_user’]</td>
-          <td>‘dvwa’</td>
-        </tr>
-        <tr>
-          <td>$_DVWA[‘db_password’]</td>
-          <td>‘password123’</td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="no-overflow">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align: center;">Variable</th>
+            <th style="text-align: center;">Value</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>$_DVWA[‘db_server’]</td>
+            <td>‘127.0.0.1’</td>
+          </tr>
+          <tr>
+            <td>$_DVWA[‘db_database’]</td>
+            <td>‘dvwa’</td>
+          </tr>
+          <tr>
+            <td>$_DVWA[‘db_user’]</td>
+            <td>‘dvwa’</td>
+          </tr>
+          <tr>
+            <td>$_DVWA[‘db_password’]</td>
+            <td>‘password123’</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <!-- ================== END Of TABLE ======================== -->
 
 3. Save and close the file.
@@ -310,7 +312,8 @@ reCAPTCHA keys must be added to DVWA's **config.inc.php** file to test for reCAP
 To add reCAPTCHA keys to DVWA's config file:
 
 1. Edit the file within the server VM:
-
+    
+    {:style="overflow: auto; white-space: nowrap;"}
     `sudo vim /var/www/html/DVWA/config/config.inc.php`
     
 2. Set **$_DVWA['recaptcha_public_key']** and **$_DVWA['recaptcha_private_key']** to the keys you generated using the link above.
