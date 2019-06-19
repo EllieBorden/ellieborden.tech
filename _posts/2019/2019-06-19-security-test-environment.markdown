@@ -2,14 +2,14 @@
 layout: "post"
 title: "Creating a Security Testing Environment"
 comments: true
-date: "2019-06-06 07:49"
+date: "2019-06-19 07:49"
 ---
 
 The goal of this exercise is to set up an intentionally vulnerable application called Damn Vulnerable Web Application (DVWA).
 
 ### Prerequisites
 
-To set up this environment, you should have a basic understanding of networking, virtualization, client-server architecture, and a server-side programming language -- ideally PHP. You could possibly get by without this, but I'd recommend reaccessing your priorities instead.  
+To set up this environment, you should have a basic understanding of networking, virtualization, client-server architecture, and a server-side programming language -- ideally PHP. You could possibly get by without this, but I'd recommend reassessing your priorities instead.  
 
 You should also be comfortable with the Linux Command Line Interface (CLI).
 
@@ -21,10 +21,9 @@ I'm not responsible for anything you do with the information here, and the devel
 
 Read the [DVWA Disclaimer](https://github.com/ethicalhack3r/DVWA#disclaimer) before continuing.
 
-
 ### Environment Details
 
-This environment has two virtual machines. One acts as a server and serves DVWA. The other  acts as a client and access the DVWA application over a network as a typical user would. The network is internal and only allows traffic between virtual machines.
+The environment we're creating has two virtual machines. One acts as a server and serves DVWA. The other  acts as a client and accesses the DVWA application over a network as a typical user would. The network is internal and only allows traffic between virtual machines.
 
 - No traffic to or from the internet
 - No traffic to or from the host machine
@@ -37,17 +36,17 @@ Virtualization             | [Virtualbox 6.0.8 ](https://www.virtualbox.org/wiki
 Server Operating System    | [Ubuntu Server 18.04.2 LTS](https://www.ubuntu.com/download/server)
 Client Operating System    | [Kali Linux 2019.2 ](https://www.offensive-security.com/kali-linux-vm-vmware-virtualbox-image-download/)
 Web Server                 | [Apache Version: 2.4.29](https://httpd.apache.org/download.cgi)
-Database Management System | [MySQL Verion: 5.7.26](https://dev.mysql.com/downloads/)
-Server-side Language       | [PHP Version: 7.2.17](https://www.php.net/downloads.php)
+Database Management System | [MySQL Version: 5.7.26](https://dev.mysql.com/downloads/)
+Server-side Language       | [PHP Version: 7.2.19](https://www.php.net/downloads.php)
 Vulnerable Web App         | [Damn Vulnerable Web Application v1.9](https://github.com/ethicalhack3r/DVWA)
 
-You don't need to run the same software or versions I am if you're not interested in following along with my demos. Check the links in the table above to find the latest software releases.
+You don't need to run the same software or versions I am if you're not interested in following along with any of my upcoming demos. Check the links in the table above to find the latest software releases.
 
-I've not tested these on Windows or macOS, but the only difference should be the VirtualBox installation.
+I've not tested this guide on Windows or macOS, but the only difference should be the VirtualBox installation.
 
 ## Installing VirtualBox
 
-VirtualBox is a free and open source virtualization software that allows you to run one or more guest machines inside of a host machine. The purpose of using a virtual machine, in this case, is to contain the exploitable application that you're installing to your machine.
+VirtualBox is a free and open source virtualization software that allows you to run one or more guest machines inside a host machine. The purpose of using virtual machines, in this case, is to contain the exploitable application that you're installing to your machine.
 
 Navigate to the [VirtualBox website](https://www.virtualbox.org/wiki/Linux_Downloads) and download the appropriate package for your host operating system. I'm assuming you can handle the installation yourself.
 
@@ -63,8 +62,8 @@ After you have an operating system, follow the steps below to create a new virtu
 2. Give the VM a name; I'm using 'DVWA'.
 3. Set the type to **Linux**.
 4. Choose the appropriate version of your guest operating system -- **Ubuntu (64-bit)** in my case -- then click **Next**.
-5. Select an amount of RAM to allocate to the guest machine. Ubuntu Server requires a at least 512MB. The default 1024MB is fine.
-6. Follow the remaining steps of creation process. The defaults options are fine.
+5. Select an amount of RAM to allocate to the guest machine. Ubuntu Server requires at least 512MB. The default 1024MB is fine.
+6. Follow the remaining steps of the creation process. The defaults options are fine.
 7. Click **Create** to complete the creation.
 8. Select the new machine and click **Start**. You will be prompted to select a virtual optical disk to start the machine from.
 9. Select the operating system you downloaded earlier, then click **Start**.
@@ -74,7 +73,7 @@ Complete this process again for the client machine. I'm using [Kali Linux 2019.2
 
 ### Optimizing the Client (Optional)
 
-After you've created the client machine, right click it within VirtualBox and click settings. You may want to increase the number of processors allocated to this machine under **System** > **Processor** > **Processor(s)** for improved performance. 
+After you've created the client machine, right-click it within VirtualBox and click **settings**. You may want to increase the number of processors allocated to this machine under **System** > **Processor** > **Processor(s)** for improved performance. 
 
 You may also want to increase the video memory, under **Display** > **Screen** > **Video Memory**.
 
@@ -100,18 +99,18 @@ Run the following commands in the server VM.
     {:style="overflow: auto; white-space: nowrap;"}
     `sudo git clone https://github.com/ethicalhack3r/DVWA`
 
-> **Troubleshooting**: If you don't have internet, make sure your host machine is connected to the internet and your guest machines are set to the default networking option, NAT.
+> **Troubleshooting**: If you can't connect to the internet, make sure your host machine is connected to the internet and your guest machines are set to the default networking option, NAT.
 
 ## Managing the Client
 
-Update the client with the following command:
+Update the client VM with the following command:
 
 {:style="overflow: auto; white-space: nowrap;"}
 `sudo apt update && sudo apt upgrade`
 
 ## VirtualBox Networking Modes
 
-Virtualbox's default networking mode **Network Address Translation (NAT)**. In a NAT networking mode, a VM is able to connect to the internet through the VirtualBox networking engine, which maps traffic from the guest machine to the host machine. While the VM can access the host machine and internet, it is not accessible _from_ the internet or host machine. Using this setting would be sufficent if you want to both serve and test DVWA from the same virtual machine. 
+Virtualbox's default networking mode **Network Address Translation (NAT)**. In a NAT networking mode, a VM is able to connect to the internet through the VirtualBox networking engine, which maps traffic from the guest machine to the host machine. While the VM can access the host machine and internet, it is not accessible _from_ the internet or host machine. Using this setting would be sufficient if you want to both serve and test DVWA from the same virtual machine. 
 
 To access the virtual machine from the host machine in a NAT networking mode, port forwarding would need to be enabled. This would allow bidirectional traffic to and from the VM. Configuring port forwarding would allow you to serve DVWA from a guest machine and test it from the host machine, however, it is less secure in that it allows traffic to the VM and relies on a firewall to filter that traffic.
 
@@ -122,7 +121,7 @@ To access the virtual machine from the host machine in a NAT networking mode, po
 As far as I know, DVWA does not require internet access to function. I also want to serve the application from one guest machine and test it from another guest machine. For these reasons, I'm going to deviate from the DVWA README's recommendation and run it in an **Internal Network**. In an internal network:
 
 - One or more VMs can connect to each other 
-- No traffic is permitted between any VM and host or VM and internet, effectively isolating the VM(s).
+- No traffic is permitted between any VM and the host machine or any VM and the internet, effectively isolating the VM(s).
 
 > **NOTE**: [Click here to learn more about VirtualBox's networking modes.](https://www.virtualbox.org/manual/ch06.html#networkingmodes)
 
@@ -130,12 +129,12 @@ As far as I know, DVWA does not require internet access to function. I also want
 
 ### Creating a DHCP Server
 
-A Dynamic Host Configuration Protocl (DHCP) server assigns IP addresses to each device within the network and is required to connect to the server from the client.
+A Dynamic Host Configuration Protocol (DHCP) server assigns IP addresses to each device within the network and is required to connect to the server from the client.
 
 To create a DHCP server:
 
 1. Poweroff all guest machines.
-2. Run following command on the host machine to create a new DHCP server, which will assign IP address to guest machines within the internal network.
+2. Run the following command on the host machine to create a new DHCP server.
 
     {:style="overflow: auto; white-space: nowrap;"}
     `vboxmanage dhcpserver add -netname intnet --ip 10.10.10.1 --netmask 255.255.255.0 --lowerip 10.10.10.2 --upperip 10.10.10.10 --enable`
@@ -146,7 +145,7 @@ To create a DHCP server:
 Complete the following steps on both the client and server machines:
 
 1. Open Virtualbox.
-2. Right click the machine and select **Settings**.
+2. Right-click the machine and select **Settings**.
 3. Move to the **Network** section and under the **Adapter 1** tab, set the **Attached to:** setting to **Internal Network**.
 4. Set the network's name to **intnet**, if it's not already, then click **OK**.
 
@@ -168,19 +167,19 @@ In the server:
     {:style="overflow: auto; white-space: nowrap;"}
     `sudo systemctl start apache2`
 
-3. Find the Ip address of the machine: 
+3. Find the IP address of the machine: 
 
     {:style="overflow: auto; white-space: nowrap;"}
     `ifconfig`. 
 
-     The IP address is likely next to **Inet** and will look like **10.10.10.x** where **x** can be any number between 1 and 10 if you configure the DHCP server using the same parameters I did.
+     The IP address is likely next to **Inet** and should look like **10.10.10.x** where **x** can be any number between 1 and 10 if you configure the DHCP server using the same parameters I did.
 
 In the client:
 
 1. Open a browser.
 2. Go to the server's IP address by typing it into the address bar. 
 
-If your internal network is succcessfully configured and Apache is running in the server VM, you should be greeted with the Apache welcoming page.
+If your internal network is successfully configured and Apache is running in the server VM, you should be greeted with the Apache welcoming page.
 
 ## Configuring the server
 
@@ -193,7 +192,7 @@ If your internal network is succcessfully configured and Apache is running in th
     {:style="overflow: auto; white-space: nowrap;"}
     `sudo cp /var/www/html/DVWA/config/config.inc.php.dist /var/www/html/DVWA/config/config.inc.php`
 
-3. In the client, refresh the page. You should be redirected to **10.10.10.2/DVWA/setup.php**, which contains an instllation checklist.
+3. In the client, refresh the page. You should be redirected to **10.10.10.2/DVWA/setup.php**, which contains an installation checklist.
 
 4. Click **Create / Reset Database**
 
@@ -203,7 +202,7 @@ If your internal network is succcessfully configured and Apache is running in th
 
 ### Creating a new MySQL User
 
-We need to create a new user to use when connecting to the database. Run the following commands in the server VM:
+We need to create a new user to use when connecting to the dvwa database. Run the following commands in the server VM:
 
 1. Open MySQL.
 
@@ -219,6 +218,11 @@ We need to create a new user to use when connecting to the database. Run the fol
 
     {:style="overflow: auto; white-space: nowrap;"}
     mysql> `GRANT ALL PRIVILEGES ON dvwa.* TO 'dvwa'@'localhost' IDENTIFIED BY 'password123';`
+    
+4. Close mysql
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    mysql> `exit`
     
 ### Setting the Database Credentials in DVWA
 
@@ -266,86 +270,149 @@ We need to create a new user to use when connecting to the database. Run the fol
       </tbody>
     </table>
     <!-- ================== END Of TABLE ======================== -->
+
+3. Save and close the file.
     
-3. In the client VM, refresh the installation page and click **Create / Reset Database**. 
+4. In the client VM, refresh the installation page and click **Create / Reset Database**. 
 
     > **NOTE**: Configuring the remaining checklist items on the setup page is covered in the next section of this guide. The database can be reset later by clicking this button again.
 
-  If your database is setup correctly you will see a message at the bottom of the page stating '_Setup Successful!_' before being redirected to the login page.
+  If your database is set up correctly you will see a message at the bottom of the page stating '_Setup Successful!_' before being redirected to the login page.
 
 ## Configuring DVWA According to the Setup Check
 
-introduction
+The configurations below are required to test some of DVWA's vulnerabilities. Please check [The DVWA project README](https://github.com/ethicalhack3r/DVWA#warning) for any additional changes that may be suggested after the publication of this guide.
 
 ### PHP function allow_url_include
 
-If you see disabled on either allow_url_fopen or allow_url_include, set the following in your php.ini file and restart Apache.
+Enabling allow_url_include is required for file-inclusion testing. To turn this on, perform the following actions in the server VM:
 
-allow_url_include = On
+1. Edit the php.ini file. The location of this file may vary depending on your operating system and version of PHP.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`sudo vim /etc/php/7.2/apache2/php.ini`
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo vim /etc/php/7.2/apache2/php.ini`
 
-set allow_url_include = on
+2. Replace **allow_url_include = off** with **allow_url_include = on** within the php.ini.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`sudo systemctl restart apache2`
+3. Save and close the file, then restart Apache.
 
-refresh page in client
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo systemctl restart apache2`
 
 ### reCAPTCHA key
 
-https://www.google.com/recaptcha/admin/create
+reCAPTCHA keys must be added to DVWA's **config.inc.php** file to test for reCAPTCHA vulnerabilities.
 
-reCAPTCHA v2
-"I'm not a robot" Checkbox
+[Click here to generate reCAPTCHA keys](https://www.google.com/recaptcha/admin/create).
 
-https://github.com/ethicalhack3r/DVWA/commit/3cef5cafa71ca7724c9231ce6aed7e853f4ce787
+**reCAPTCHA v2** is supposedly functional, according to [pull request #227](https://github.com/ethicalhack3r/DVWA/pull/227). I recommend checking the [DVWA issues page](https://github.com/ethicalhack3r/DVWA/issues) for any new information on **reCAPTCHA v3**. Otherwise, select **"I'm not a robot" Checkbox** under **reCAPTCHA v2**.
+
+To add reCAPTCHA keys to DVWA's config file:
+
+1. Edit the file within the server VM:
+
+    `sudo vim /var/www/html/DVWA/config/config.inc.php`
+    
+2. Set **$_DVWA['recaptcha_public_key']** and **$_DVWA['recaptcha_private_key']** to the keys you generated using the link above.
+
+3. Save and close the file.
 
 ### File Permissions
 
-Find apache2 users
-ps aux | egrep '(apache|httpd)'
+The Apache user must have write permission to a few directories to work with file uploads and the PHP-Intrusion Detection System (PHPIDS).
 
-set www folder user and group owner to the apache user
+1. Find the apache2 user. 
 
-chown -R www-data:www-data /var/www
+    {:style="overflow: auto; white-space: nowrap;"}
+    `ps aux | egrep '(apache|httpd)'`
+    
+    Mine is **www-data**.
 
-that should be sufficient. Check with ls -la
+2. Recursively set the **/var/www/** folder's user/group owner to the apache user.
 
-if needed change the permissions with sudo chmod -R 755 .
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo chown -R www-data:www-data /var/www`
+
+3. Check with **/var/www/** file permissions.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `ls -la /var/www`
+    
+    It should look similar to **drwxr-xr-x**. This string is divided into four parts:
+    
+    - **d** - Indicates that this file is a directory.
+    - **rwx** - Indicates the user, www-data in this case, has read, write, and execute permission.
+    - **r-x** - Indicates the user group, also www-data, has write and execute permission.
+    - **r-x** - Indicates all users have read and execute permissions.
+
+4. If your www-data user does not have write permission (w), assign it with the following command:
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo chmod -R 755`
+
+> **NOTE**: [Click here to learn more about Linux file permissions.](https://www.linux.com/learn/understanding-linux-file-permissions)
 
 ### .htaccess Configuration
 
-If you are using PHP v5.2.6 or above, you will need to do the following in order for SQL injection and other vulnerabilities to work.
+DVWA's .htaccess file must be changed for SQL injection to work in PHP v5.2.6 or above.
 
-{:style="overflow: auto; white-space: nowrap;"}
-`sudo vim /var/www/html/DVWA/.htaccess`
+1. Edit the .htaccess file.
 
-Replace:
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo vim /var/www/html/DVWA/.htaccess`
 
-```
-<IfModule mod_php5.c>
-    php_flag magic_quotes_gpc off
-    #php_flag allow_url_fopen on
-    #php_flag allow_url_include on
-</IfModule>
-```
+2. Replace:
+    
+    ```
+    <IfModule mod_php5.c>
+        php_flag magic_quotes_gpc off
+        #php_flag allow_url_fopen on
+        #php_flag allow_url_include on
+    </IfModule>
+    ```
 
-With:
+    With:
 
-```
-<IfModule mod_php5.c>
-    magic_quotes_gpc = Off
-    allow_url_fopen = On
-    allow_url_include = On
-</IfModule>
-```
+    ```
+    <IfModule mod_php5.c>
+        magic_quotes_gpc = Off
+        allow_url_fopen = On
+        allow_url_include = On
+    </IfModule>
+    ```
+    
+3. Save and close the file.
 
 ### Recreate the Database
-recreate the database
 
-## Conclusion
+After making all of the necessary configurations to DVWA and the server, recreate the dvwa database.
 
-Login with admin/password
-if you have problems, leave a comment below
+1. In the client VM, open **10.10.10.2/DVWA/setup.php**.
+
+2. Click **Create / Reset Database**.
+
+## Using DVWA
+
+Login to DVWA with the default admin credentials **admin** and **password**. The navigation bar on the left lists the vulnerability modules. The application's security setting is currently set to **impossible**, meaning that these vulnerabilities do not exist.
+
+### Changing Security Settings
+
+To change DVWA's difficulty settings:
+
+1. Open **config.inc.php** in the server.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo vim /var/www/html/DVWA/config/config.inc.php`
+
+2. Set **$_DVWA['default_security_level']** to 'low', 'medium', 'high', or 'impossible', depending on your needs.
+
+3. **(OPTIONAL)** Set **$_DVWA['default_phpids_level']** to 'enable' if you want to practice testing an application that is monitored by an intrusion detection system.
+
+4. **(OPTIONAL)** Set **$_DVWA['default_phpids_verbosel']** to 'true' if you want to be notified when your request(s) has been blocked by PHPIDS.
+
+5. Save and close the file.
+
+## Troubleshooting
+
+Leave a comment below if you have any problems with this guide.
+
