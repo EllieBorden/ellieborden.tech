@@ -71,7 +71,7 @@ If you encounter other errors, post them in a comments section below.
 
 ## Testing
 
-Navigate to the search box on page **bwapp/sqli_1.php** to begin. 
+Go to the search box on page **bwapp/sqli_1.php** to begin. 
 
 ### Identify Inputs
 

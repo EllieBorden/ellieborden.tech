@@ -435,7 +435,7 @@ footer {
 .img-center {display: block; margin: 0 auto;}
 .vert-pad {padding: 15px 0;}
 
-h1 {font-size: 1.75em;}
+h1 {font-size: 1.75em; line-height: 1.25;}
 
 .warning{color: #8e1313;}
 .no-overflow{overflow: auto;}

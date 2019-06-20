@@ -48,7 +48,7 @@ I've not tested this guide on Windows or macOS, but the only difference should b
 
 VirtualBox is a free and open source virtualization software that allows you to run one or more guest machines inside a host machine. The purpose of using virtual machines, in this case, is to contain the exploitable application that you're installing to your machine.
 
-Navigate to the [VirtualBox website](https://www.virtualbox.org/wiki/Linux_Downloads) and download the appropriate package for your host operating system. I'm assuming you can handle the installation yourself.
+Go to the [VirtualBox website](https://www.virtualbox.org/wiki/Linux_Downloads) and download the appropriate package for your host operating system. I'm assuming you can handle the installation yourself.
 
 ## Creating Virtual Machines
 
@@ -226,7 +226,7 @@ We need to create a new user to use when connecting to the dvwa database. Run th
     
 ### Setting the Database Credentials in DVWA
 
-1. Open the DVWA configuration file in a text editor, by running the following command in the server VM:
+1. Open the DVWA configuration file in a text editor by running the following command in the server VM:
 
     {:style="overflow: auto; white-space: nowrap;"}
     `sudo vim /var/www/html/DVWA/config/config.inc.php`
