@@ -294,7 +294,7 @@ Enabling allow_url_include is required for file-inclusion testing. To turn this 
     {:style="overflow: auto; white-space: nowrap;"}
     `sudo vim /etc/php/7.2/apache2/php.ini`
 
-2. Replace **allow_url_include = off** with **allow_url_include = on** within the php.ini.
+2. Replace **allow_url_include = off** with **allow_url_include = on**.
 
 3. Save and close the file, then restart Apache.
 
@@ -324,7 +324,7 @@ To add reCAPTCHA keys to DVWA's config file:
 
 The Apache user must have write permission to a few directories to work with file uploads and the PHP-Intrusion Detection System (PHPIDS).
 
-1. Find the apache2 user. 
+1. Find the apache user. 
 
     {:style="overflow: auto; white-space: nowrap;"}
     `ps aux | egrep '(apache|httpd)'`
@@ -415,7 +415,22 @@ To change DVWA's difficulty settings:
 
 5. Save and close the file.
 
+### Verbose Error Messages
+
+To receive verbose error messages while testing:
+
+1. Edit the php.ini file. The location of this file may vary depending on your operating system and version of PHP.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo vim /etc/php/7.2/apache2/php.ini`
+
+2. Replace **display_errors = Off** with **display_errors = On**.
+
+3. Save and close the file, then restart Apache.
+
+    {:style="overflow: auto; white-space: nowrap;"}
+    `sudo systemctl restart apache2`
+
 ## Troubleshooting
 
-Leave a comment below if you have any problems with this guide.
-
+Leave a comment below if you have any problems with this guide. If you're experiencing issues with DVWA, refer to the [DVWA issues page](https://github.com/ethicalhack3r/DVWA/issues).
