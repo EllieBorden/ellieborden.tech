@@ -3,25 +3,19 @@ layout: page
 title: ellieborden.tech
 ---
 
-ellieborden.tech is my personal blog about software quality and testing. Its topics are primarily based on technical books and tend to emphasize theory and techniques rather than tools. 
-
-You probably won't find a lot of material on automation here either. I like Selenium as much as the next girl, but I'm honestly tired of hearing about it. <span style="font-size: .9rem;">Looking at you, recruiters from LinkedIn.</span>
-
-My goal with this site is to create a free resource for my future-self and other testers who are bored with the surface-level 'types of software testing' articles. 
+Because ellieborden.com is $700, and I'm not paying that much for a freakin domain name. 
 
 ## About Me
 
 ![profile picture](../assets/images/0.jpeg){:.profile-pic}
 
-My name is Ellie Borden. I'm a software tester with a brief background in automation. I don't spend a lot of time coding these days, but when I do it's not in C#. 
+My name is Ellie Borden. I'm a software tester with a brief background in automation. I'm currently studying C++ and application development for Linux.
 
-My other interests include writing, jogging, hotAF peppers, radio stuff (KN4UVU), pc-gaming, and leg day. I spend the majority of my time reading -- mostly nonfiction, but the occasional Fantasy or Thriller too.
-
-I'm based in Grand Rapids, Michigan but am traveling the US with my lover for his work. He's the lime to my Malibu and cranberry. 
+My other interests include writing, running, hotAF peppers, and pc-gaming. I spend the majority of my time reading -- mostly nonfiction, but the occasional Fantasy too.
 
 ## Subscribe
 
-Sorry if you had trouble finding this. I think we can all agree that newsletter pop-ups are obnoxious. Subscribe to my newsletter to receive email notifications when new content is posted. 
+Subscribe to my newsletter to receive email notifications when new content is posted to this website. Spoiler alert: it's not very often. 
 
 <!-- Begin Mailchimp Signup Form -->
 <link href="/assets/css/mailchimp.css" rel="stylesheet" type="text/css">
