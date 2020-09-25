@@ -3,8 +3,8 @@
 # - gem install bundler jekyll
 # - git clone ellieborden.tech
 # - cd ellieborden.tech
-# - bundle install
-# - sudo gem pristine ffi --version 1.10.0
+# - bundle 
+
 
 # Serve
 bundle exec jekyll serve --draft --livereload

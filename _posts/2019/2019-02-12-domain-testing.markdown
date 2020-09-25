@@ -74,7 +74,7 @@ Boundary value analysis is an extension of equivalence partitioning in which bou
 
 Referring to the previous example, its valid boundary values are **1** and **10000**, whereas its invalid boundary values are **0** and **10001**.  
 
-![border values graph](assets/images/2019/bva.png){:.img-center .vert-pad}
+![border values graph](/assets/images/2019/bva.png){:.img-center .vert-pad}
 
 Since those values were already selected to represent their classes, we've already performed boundary value analysis on that input. 
 

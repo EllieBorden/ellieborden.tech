@@ -1,13 +1,62 @@
-title: Ellie Borden
-author: Ellie Borden
-description: ellieborden.tech is my personal blog about software quality and testing. Its topics are primarily based on technical books and tend to emphasize theory and techniques rather than tools.
+title: ellieborden.tech
+author:
+  name: Ellie Borden
+  email: dev@ellieborden.tech
+description: > # this means to ignore newlines until "show_excerpts:"
+  This site was intended to be a blog about career topics that I no longer care about. Now it's just a place where I write for the sake of writing. I don't expect anyone to read it, and I'm honestly suprised you're even here. 
 
-highlighter: null
-permalink: /:title
+show_excerpts: true # set to true to show excerpts on the homepage
 
-url: https://ellieborden.tech
-baseurl:
+# Minima date format
+# refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
+minima:
+  date_format: "%b %-d, %Y"
 
-# Custom options:
-# color_scheme: azul|ruby|amber|avocado
-color_scheme: azul
+  # generate social links in footer
+  social_links:
+
+    github:  ellieborden
+    # devto: jekyll
+    # dribbble: jekyll
+    # facebook: jekyll
+    # flickr:   jekyll
+    # instagram: jekyll
+    linkedin: bordenellie
+    # pinterest: jekyll
+    # youtube: jekyll
+    # youtube_channel: UC8CXR0-3I70i1tfPg1PAE1g
+    # youtube_channel_name: CloudCannon
+    # telegram: jekyll
+    # googleplus: +jekyll
+    # microdotblog: jekyll
+    # keybase: jekyll
+
+    # Mastodon instances
+    # mastodon:
+    # - username: jekyll
+    #   instance: example.com
+    # - username: jekyll2
+    #   instance: example.com
+
+    # GitLab instances
+    # gitlab:
+    # - username: jekyll
+    #   instance: example.com
+    # - username: jekyll2
+    #   instance: example.com
+
+# If you want to link only specific pages in your header, uncomment
+# this and add the path to the pages in order as they should show up
+header_pages:
+  -
+ #- about.md
+
+# Build settings
+theme: minima
+
+disqus:
+   shortname: ellieborden-tech
+
+plugins:
+ - jekyll-feed
+ - jekyll-seo-tag
