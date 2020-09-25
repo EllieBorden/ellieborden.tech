@@ -3,7 +3,7 @@ author:
   name: Ellie Borden
   email: dev@ellieborden.tech
 description: > # this means to ignore newlines until "show_excerpts:"
-  This site was intended to be a blog about career topics that I no longer care about. Now it's just a place where I write for the sake of writing. I don't expect anyone to read it, and I'm honestly suprised you're even here. 
+  This site was intended to be a blog about career topics that I no longer care about. Now it's just a place where I write for the sake of writing. 
 
 show_excerpts: true # set to true to show excerpts on the homepage
 
