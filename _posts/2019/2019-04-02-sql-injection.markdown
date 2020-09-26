@@ -200,11 +200,11 @@ In this section, we're injecting SQL into the URL's **title** parameter. Since *
   </thead>
   <tbody>
     <tr>
-      <td>?title=%27&action=search</td>
+      <td><span style="white-space: nowrap;">?title=%27&action=search</span></td>
       <td>'Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1' is returned.</td>
     </tr>
     <tr>
-      <td>?title=%22&action=search</td>
+      <td><span style="white-space: nowrap;">?title=%22&action=search</span></td>
       <td>'No movies were found!' is returned.</td>
     </tr>
   </tbody>
