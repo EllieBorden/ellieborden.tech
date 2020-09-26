@@ -200,20 +200,12 @@ In this section, we're injecting SQL into the URL's **title** parameter. Since *
   </thead>
   <tbody>
     <tr>
-      <td>?title=&amp;action=1</td>
-      <td>Presumably all movies are returned.</td>
+      <td>?title=%27&action=search</td>
+      <td>'Error: You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '%'' at line 1' is returned.</td>
     </tr>
     <tr>
-      <td>?title=&amp;action=test</td>
-      <td>Presumably all movies are returned.</td>
-    </tr>
-    <tr>
-      <td>?title=&amp;action=</td>
-      <td>Presumably all movies are returned.</td>
-    </tr>
-    <tr>
-      <td>?title=</td>
-      <td>Presumably all movies are returned.</td>
+      <td>?title=%22&action=search</td>
+      <td>'No movies were found!' is returned.</td>
     </tr>
   </tbody>
 </table>
