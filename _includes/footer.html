@@ -5,14 +5,14 @@
         <h2>{{ site.title }}</h2>
         <p>{{ site.description }}</p>
       </section>
-      {%- include social.html -%}
       <p class="copyright">
         &copy; <a href="mailto:{{ site.email }}">{{ site.author }}</a>. Design: <a href="https://html5up.net">HTML5 UP</a>.
       </p>
     </div>
     <div>
       <section>
-        <h2>Get in touch</h2>
+        {%- include social.html -%}
+        <!-- <h2>Get in touch</h2>
         <form method="post" action="#">
           <div class="fields">
             <div class="field half">
@@ -29,7 +29,7 @@
             <li><input type="submit" value="Send" class="primary" /></li>
             <li><input type="reset" value="Reset" /></li>
           </ul>
-        </form>
+        </form> -->
       </section>
     </div>
   </div>
