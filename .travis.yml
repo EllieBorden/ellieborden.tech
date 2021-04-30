@@ -1,15 +1,21 @@
 language: ruby
-cache: bundler
-rvm: 2.5
+sudo: false
 
-before_install:
-  - gem update --system --no-document
-  - gem install bundler --no-document
+rvm:
+- 2.5.5
 
-script: script/cibuild
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
 
 env:
-  matrix:
-    - JEKYLL_VERSION="~> 3.8.0"
-    - JEKYLL_VERSION="~> 3.9"
-    - JEKYLL_VERSION="~> 4.0"
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true # speeds up installation of html-proofer
+
+
+cache: bundler
+
+script:
+- bundle exec jekyll build
+- bundle exec htmlproofer ./_site --disable_external
