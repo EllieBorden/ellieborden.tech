@@ -4,10 +4,12 @@ email: ellie91b@outlook.com
 description: >-
   A collection of charcoal drawings by Ellie Borden.
 
-# social:
-#   instagram: ellie.borden
-#   github: ellieborden
-#   linkedin: bordenellie
+social:
+  twitter: 
+  facebook: 
+  instagram: ellie.borden
+  github: ellieborden
+  linkedin: bordenellie
 
 # Build settings
 markdown: kramdown
